@@ -171,19 +171,23 @@ class ETLPipeline:
         """Fase de validación de calidad de datos."""
         self.logger.info("Iniciando fase DATA QUALITY")
         
-        for data_type, data in transformed_data.items():
-            if data:  # Solo verificar si hay datos
-                self.logger.info(f"Validando calidad de datos para {data_type}")
-                try:
-                    results = self.dq_checker.validate_data(data_type, data)
-                    if not results['is_valid']:
-                        error_msg = f"Fallaron validaciones DQ para {data_type}: {results['errors']}"
-                        self.logger.error(error_msg)
-                        self.stats['errors'].extend(results['errors'])
-                except Exception as e:
-                    error_msg = f"Error en validación DQ para {data_type}: {str(e)}"
-                    self.logger.error(error_msg)
-                    self.stats['errors'].append(error_msg)
+        # Validar todo el conjunto de datos
+        validation_results = self.dq_checker.validate_full_dataset(transformed_data)
+        
+        if not validation_results['is_valid']:
+            self.logger.warning("Problemas de calidad de datos detectados:")
+            for error in validation_results['errors']:
+                self.logger.warning(f"  - {error}")
+        
+        # Generar reporte
+        report = self.dq_checker.generate_dq_report(validation_results)
+        self.logger.info("\n" + report)
+        
+        # Actualizar estadísticas
+        self.stats['records_processed'] = validation_results['records_checked']
+        self.stats['errors'].extend(validation_results['errors'])
+        
+        return validation_results['is_valid']
 
     def _load_phase(self, transformed_data):
         """Fase de carga a base de datos."""

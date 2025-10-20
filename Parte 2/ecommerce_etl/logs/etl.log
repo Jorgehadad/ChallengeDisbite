@@ -1,0 +1,44 @@
+2025-10-19 23:41:59,264 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:41:59,264 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:41:59,265 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:41:59,265 - __main__ - INFO - Cargando products desde caché
+2025-10-19 23:41:59,265 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-19 23:41:59,274 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:41:59,274 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:41:59,274 - __main__ - INFO - Cargando carts desde caché
+2025-10-19 23:41:59,275 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-19 23:41:59,275 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:41:59,275 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:41:59,275 - __main__ - INFO - Cargando users desde caché
+2025-10-19 23:41:59,276 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-19 23:41:59,276 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:41:59,276 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:41:59,276 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:41:59,276 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:41:59,276 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:41:59,277 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:41:59,277 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:41:59,277 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:41:59,277 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:41:59,277 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:41:59,277 - __main__ - INFO - 
+REPORTE DE CALIDAD DE DATOS
+==================================================
+Registros verificados: 58
+Errores encontrados: 0
+Estado: PASS
+
+2025-10-19 23:41:59,277 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:41:59,278 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:41:59,313 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:41:59,346 - __main__ - INFO - Cargando 20 registros de products
+2025-10-19 23:41:59,379 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-19 23:41:59,416 - __main__ - INFO - Cargando 10 registros de users
+2025-10-19 23:41:59,451 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-19 23:41:59,492 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-19 23:41:59,521 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-19 23:41:59,557 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-19 23:41:59,601 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-19 23:41:59,647 - __main__ - INFO - Pipeline ETL completado en 0:00:00.383107
+2025-10-19 23:41:59,648 - __main__ - INFO - Registros procesados: 116
+2025-10-19 23:41:59,648 - __main__ - INFO - Errores encontrados: 0

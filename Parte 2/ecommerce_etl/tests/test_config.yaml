@@ -1,0 +1,21 @@
+api:
+  base_url: 'https://fakestoreapi.com'
+  endpoints:
+    products: '/products'
+    carts: '/carts'
+    users: '/users'
+  retry:
+    max_retries: 3
+    backoff_factor: 1
+    status_forcelist: [500, 502, 503, 504]
+
+database:
+  host: 'localhost'
+  port: 5432
+  database: 'test_fakestore_dw'
+  user: 'test_user'
+  password: 'test_password'
+  target_schema: 'public'
+
+etl:
+  batch_size: 100

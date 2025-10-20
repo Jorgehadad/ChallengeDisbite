@@ -9,18 +9,26 @@ from datetime import datetime, timedelta
 
 def setup_logging():
     """Configura el sistema de logging."""
-    log_level = os.getenv('LOG_LEVEL', 'INFO').upper()
-    log_file = os.getenv('LOG_FILE', 'logs/etl.log')
-    
     # Crear directorio de logs si no existe
-    os.makedirs(os.path.dirname(log_file), exist_ok=True)
+    log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')
+    os.makedirs(log_dir, exist_ok=True)
     
+    # Configurar el formato del log
+    log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    
+    # Configurar el logger raíz
     logging.basicConfig(
-        level=log_level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        level=logging.INFO,
+        format=log_format,
         handlers=[
-            logging.FileHandler(log_file),
-            logging.StreamHandler()
+            # Handler para consola
+            logging.StreamHandler(),
+            # Handler para archivo
+            logging.FileHandler(
+                os.path.join(log_dir, 'etl.log'),
+                mode='a',  # Modo append para no sobrescribir logs anteriores
+                encoding='utf-8'
+            )
         ]
     )
 

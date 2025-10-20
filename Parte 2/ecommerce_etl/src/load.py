@@ -22,7 +22,7 @@ class DataLoader:
             'password': config['database']['password']
         }
         
-        # Table mapping
+        # Table mapping (logical type -> base physical table name)
         self.table_mapping = {
             'dates': 'dim_date',
             'products': 'dim_products',
@@ -34,6 +34,55 @@ class DataLoader:
         self.schema = config['database'].get('target_schema', 'public')
         self.batch_size = config['etl']['batch_size']
         self.logger = logging.getLogger(__name__)
+
+    def _qualify(self, table_name: str) -> str:
+        """Return schema-qualified table if not already qualified."""
+        if '.' in table_name:
+            return table_name
+        if self.schema:
+            return f"{self.schema}.{table_name}"
+        return table_name
+
+    def _table_exists(self, cursor, table_name: str) -> bool:
+        """Check if a table exists (supports qualified names)."""
+        cursor.execute("SELECT to_regclass(%s)", (table_name,))
+        return cursor.fetchone()[0] is not None
+
+    def _resolve_table_name(self, cursor, base_name: str) -> str:
+        """
+        Resolve the actual table name to use, trying:
+        - configured base name
+        - singular/plural variants
+        Each both unqualified and schema-qualified. Returns the first that exists.
+        """
+        candidates_base = [base_name]
+        if base_name.endswith('s'):
+            candidates_base.append(base_name[:-1])  # singular fallback
+        else:
+            candidates_base.append(base_name + 's')  # plural fallback
+
+        # Build expanded candidate list (qualified and unqualified)
+        candidates = []
+        for name in candidates_base:
+            candidates.append(name)
+            candidates.append(self._qualify(name))
+
+        # Deduplicate while preserving order
+        seen = set()
+        unique_candidates = []
+        for c in candidates:
+            if c not in seen:
+                unique_candidates.append(c)
+                seen.add(c)
+
+        for candidate in unique_candidates:
+            if self._table_exists(cursor, candidate):
+                return candidate
+
+        # Not found; build helpful message
+        raise RuntimeError(
+            f"Tabla de destino no encontrada. Intentado: {', '.join(unique_candidates)}"
+        )
 
     @contextmanager
     def _get_connection(self):
@@ -54,22 +103,27 @@ class DataLoader:
         if not data:
             return
             
-        table_name = self.table_mapping.get(data_type)
-        if not table_name:
+        table_base = self.table_mapping.get(data_type)
+        if not table_base:
             raise ValueError(f"Unknown data type: {data_type}")
-            
-        self.logger.info(f"Cargando {len(data)} registros en {table_name}")
         
         try:
+            # Resolve actual physical table to use (handles schema + pluralization)
+            with self._get_connection() as conn:
+                with conn.cursor() as cursor:
+                    resolved_table = self._resolve_table_name(cursor, table_base)
+
+            self.logger.info(f"Cargando {len(data)} registros en {resolved_table}")
+
             batch_size = self.config['etl']['batch_size']
             for i in range(0, len(data), batch_size):
                 batch = data[i:i + batch_size]
-                self._insert_batch(table_name, batch)
+                self._insert_batch(resolved_table, batch)
         except Exception as e:
             self.logger.error(f"Error cargando lote: {str(e)}")
             raise
 
-    def _insert_batch(self, table_name, batch):
+    def _insert_batch(self, resolved_table_name, batch):
         """Inserta un lote de registros en la tabla especificada."""
         if not batch:
             return
@@ -84,9 +138,11 @@ class DataLoader:
         }
 
         # Get valid columns for this table
-        valid_columns = table_columns.get(table_name, [])
+        # Determine unqualified base table name for column mapping
+        base_name = resolved_table_name.split('.')[-1]
+        valid_columns = table_columns.get(base_name, [])
         if not valid_columns:
-            raise ValueError(f"No column mapping defined for table {table_name}")
+            raise ValueError(f"No column mapping defined for table {resolved_table_name}")
 
         # Filter data to only include valid columns
         filtered_batch = []
@@ -101,7 +157,7 @@ class DataLoader:
         placeholders = ','.join(['%s'] * len(columns))
         column_names = ','.join(columns)
         query = f"""
-                INSERT INTO {table_name} ({column_names})
+                INSERT INTO {resolved_table_name} ({column_names})
                 VALUES ({placeholders})
         """
         

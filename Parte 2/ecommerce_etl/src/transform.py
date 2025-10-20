@@ -4,67 +4,34 @@
 import pandas as pd
 import logging
 from typing import Dict, List, Any, Tuple
-from datetime import datetime, timedelta
-import numpy as np
+from datetime import datetime, date
 
 class DataTransformer:
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.logger = logging.getLogger(__name__)
     
-    def transform_products(self, products_data: List[Dict]) -> List[Dict]:
-        """Transforma datos de productos."""
+    def transform_products(self, products):
+        """Normaliza y aplana productos."""
         transformed = []
-        
-        for product in products_data:
-            try:
-                # Aplanar estructura de rating
-                rating = product.get('rating', {})
-                
-                transformed_product = {
-                    'product_id': product['id'],
-                    'title': product['title'].strip(),
-                    'category': self._normalize_category(product['category']),
-                    'price': float(product['price']),
-                    'description': product.get('description', '').strip(),
-                    'image_url': product.get('image', ''),
-                    'rating_rate': float(rating.get('rate', 0)),
-                    'rating_count': int(rating.get('count', 0)),
-                    'created_at': datetime.now()
-                }
-                
-                # Validaciones básicas
-                if transformed_product['price'] < 0:
-                    self.logger.warning(f"Precio negativo para producto {product['id']}")
-                    continue
-                    
-                transformed.append(transformed_product)
-                
-            except (KeyError, ValueError, TypeError) as e:
-                self.logger.error(f"Error transformando producto {product.get('id', 'unknown')}: {str(e)}")
-                continue
-        
-        self.logger.info(f"Transformados {len(transformed)} productos")
+        for p in products:
+            prod_id = p.get('id') or p.get('product_id')
+            # keep title as-is, category lowercased (no capitalizing)
+            category = p.get('category')
+            if category is not None:
+                category = category.lower()
+            transformed.append({
+                'product_id': prod_id,
+                'title': p.get('title'),
+                'category': category,
+                'price': float(p.get('price')) if p.get('price') is not None else None,
+                'description': p.get('description'),
+                'image_url': p.get('image') or p.get('image_url'),
+                'rating_rate': (p.get('rating') or {}).get('rate') if isinstance(p.get('rating'), dict) else p.get('rating_rate'),
+                'rating_count': (p.get('rating') or {}).get('count') if isinstance(p.get('rating'), dict) else p.get('rating_count')
+            })
         return transformed
-    
-    def _normalize_category(self, category: str) -> str:
-        """Normaliza categorías a formato consistente."""
-        if not category:
-            return 'Unknown'
-        
-        # Title case y limpieza
-        normalized = category.strip().title()
-        
-        # Mapeo de categorías comunes
-        category_mapping = {
-            "Men'S Clothing": "Men's Clothing",
-            "Women'S Clothing": "Women's Clothing",
-            "Electronics": "Electronics",
-            "Jewelery": "Jewelry"
-        }
-        
-        return category_mapping.get(normalized, normalized)
-    
+
     def transform_users(self, users_data: List[Dict]) -> Dict[str, List[Dict]]:
         """Transforma datos de usuarios separando en users y geography."""
         users_transformed = []
@@ -178,25 +145,51 @@ class DataTransformer:
             return datetime.now()
     
     def generate_date_dimension(self, sales_data):
-        """Genera dimensión de tiempo a partir de las ventas."""
+        """Genera dimensión de tiempo a partir de las ventas.
+        Acepta sales_data con 'date' como str ISO (YYYY-MM-DD), date o datetime.
+        """
         dates = []
-        unique_dates = set()
-        
+        seen = set()
+
         for sale in sales_data:
-            date = sale['date']  # Asumiendo que es un objeto datetime
-            if date not in unique_dates:
-                unique_dates.add(date)
-                dates.append({
-                    'date_key': int(date.strftime('%Y%m%d')),
-                    'date': date,
-                    'day': date.day,
-                    'month': date.month,
-                    'year': date.year,
-                    'quarter': (date.month - 1) // 3 + 1,
-                    'iso_week': int(date.strftime('%V')),
-                    'day_of_week': date.weekday(),
-                    'day_name': date.strftime('%A'),
-                    'month_name': date.strftime('%B')
-                })
-        
+            raw = sale.get('date')
+            if raw is None:
+                continue
+
+            # Normalizar a objeto date
+            dt_obj = None
+            if isinstance(raw, date) and not isinstance(raw, datetime):
+                dt_obj = raw
+            elif isinstance(raw, datetime):
+                dt_obj = raw.date()
+            elif isinstance(raw, str):
+                # intentar parse ISO / YYYY-MM-DD
+                try:
+                    dt_obj = datetime.fromisoformat(raw).date()
+                except Exception:
+                    try:
+                        dt_obj = datetime.strptime(raw, '%Y-%m-%d').date()
+                    except Exception:
+                        # ignorar si no se puede parsear
+                        continue
+            else:
+                continue
+
+            if dt_obj in seen:
+                continue
+            seen.add(dt_obj)
+
+            dates.append({
+                'date_key': int(dt_obj.strftime('%Y%m%d')),
+                'date': dt_obj,
+                'day': dt_obj.day,
+                'month': dt_obj.month,
+                'year': dt_obj.year,
+                'quarter': (dt_obj.month - 1) // 3 + 1,
+                'iso_week': int(dt_obj.strftime('%V')) if hasattr(dt_obj, 'strftime') else None,
+                'day_of_week': dt_obj.weekday(),
+                'day_name': dt_obj.strftime('%A'),
+                'month_name': dt_obj.strftime('%B')
+            })
+
         return sorted(dates, key=lambda x: x['date_key'])
