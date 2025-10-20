@@ -32,6 +32,20 @@ def init_database(config):
         print(f"Error initializing database: {str(e)}")
         raise
 
+    # Optionally execute views/indexes SQL if present
+    views_sql = os.path.join(script_dir, 'sql', 'create_views.sql')
+    if os.path.exists(views_sql):
+        try:
+            with open(views_sql, 'r') as f:
+                views_script = f.read()
+            with psycopg2.connect(**db_params) as conn:
+                with conn.cursor() as cur:
+                    cur.execute(views_script)
+            print("Views and indexes created/refreshed successfully!")
+        except Exception as e:
+            print(f"Error creating views/indexes: {str(e)}")
+            raise
+
 if __name__ == "__main__":
     load_dotenv()
     # Get absolute path to config file

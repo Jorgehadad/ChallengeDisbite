@@ -10,26 +10,59 @@ from datetime import datetime, timedelta
 def setup_logging():
     """Configura el sistema de logging."""
     # Crear directorio de logs si no existe
-    log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')
-    os.makedirs(log_dir, exist_ok=True)
-    
+    # Prefer repo/logs, but if it is not writable (mounted read-only inside a
+    # container), fall back to common writable locations such as
+    # /opt/airflow/logs (Airflow runtime) or the system temp directory.
+    candidate_dirs = [
+        os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs'),
+        '/opt/airflow/logs',
+        os.path.join(os.path.expanduser('~'), 'logs'),
+        None  # placeholder for tempfile.gettempdir()
+    ]
+
+    import tempfile
+    candidate_dirs[-1] = tempfile.gettempdir()
+
+    chosen_log_dir = None
+    for d in candidate_dirs:
+        try:
+            if d is None:
+                continue
+            os.makedirs(d, exist_ok=True)
+            # try to open a test file to ensure it's writable
+            test_path = os.path.join(d, '.write_test')
+            with open(test_path, 'w', encoding='utf-8') as f:
+                f.write('ok')
+            os.remove(test_path)
+            chosen_log_dir = d
+            break
+        except Exception:
+            # not writable, try next
+            chosen_log_dir = None
+
+    # If none of the candidate dirs worked, fall back to stream-only logging
+    log_handlers = [logging.StreamHandler()]
+
+    # Configure the file handler if we found a writable directory
+    if chosen_log_dir:
+        log_file = os.path.join(chosen_log_dir, 'etl.log')
+        try:
+            file_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
+            log_handlers.append(file_handler)
+        except Exception:
+            # If it fails, keep console-only handler
+            logging.getLogger(__name__).warning(
+                f"No se pudo crear handler de archivo en {log_file}, usando consola."
+            )
+
     # Configurar el formato del log
     log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    
+
     # Configurar el logger raíz
     logging.basicConfig(
         level=logging.INFO,
         format=log_format,
-        handlers=[
-            # Handler para consola
-            logging.StreamHandler(),
-            # Handler para archivo
-            logging.FileHandler(
-                os.path.join(log_dir, 'etl.log'),
-                mode='a',  # Modo append para no sobrescribir logs anteriores
-                encoding='utf-8'
-            )
-        ]
+        handlers=log_handlers
     )
 
 def load_config(config_path: str) -> Dict[str, Any]:

@@ -31,6 +31,44 @@ def test_validate_referential_integrity(test_config):
     assert len(errors) == 1
     assert 'Producto 999 no existe' in errors[0]
 
+
+def test_validate_products_duplicates_and_ranges(test_config):
+    checker = DataQualityChecker(test_config)
+    products = [
+        {'product_id': 1, 'price': 10, 'rating_rate': 4.5},
+        {'product_id': 2, 'price': -5, 'rating_rate': 6},
+        {'product_id': 1, 'price': 12, 'rating_rate': 4}
+    ]
+
+    validation = checker.validate_data('products', products)
+    assert validation['is_valid'] is False
+    assert any('price < 0' in e for e in validation['errors'])
+    assert any('rating_rate' in e for e in validation['errors'])
+    assert any('Duplicado' in e for e in validation['errors'])
+
+
+def test_validate_full_dataset_combined(test_config):
+    checker = DataQualityChecker(test_config)
+    users = [
+        {'user_id': 1, 'email': 'a@example.com'},
+        {'user_id': 2, 'email': ''}
+    ]
+    products = [
+        {'product_id': 1},
+    ]
+    sales = [
+        {'cart_id': 10, 'product_id': 1, 'user_id': 1, 'quantity': 2, 'unit_price': 5},
+        {'cart_id': 11, 'product_id': 999, 'user_id': 2, 'quantity': 1, 'unit_price': 3},
+        {'cart_id': 10, 'product_id': 1, 'user_id': 1, 'quantity': 2, 'unit_price': 5},
+    ]
+
+    full = {'users': users, 'products': products, 'sales': sales}
+    res = checker.validate_full_dataset(full)
+    assert res['is_valid'] is False
+    assert any('email' in e or 'faltante' in e for e in res['errors'])
+    assert any('no existe' in e for e in res['errors'])
+    assert any('Duplicado' in e for e in res['errors'])
+
 def test_validate_empty_data(test_config):
     checker = DataQualityChecker(test_config)
     validation = checker.validate_data('products', [])

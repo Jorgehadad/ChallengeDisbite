@@ -9,6 +9,9 @@ class DataQualityChecker:
         self.config = config
         self.logger = logging.getLogger(__name__)
         self.rules = config.get('data_quality', {}).get('rules', {})
+        # default thresholds
+        self.null_threshold = self.config.get('data_quality', {}).get('null_threshold', 0.05)
+        self.duplicate_threshold = self.config.get('data_quality', {}).get('duplicate_threshold', 0.0)
 
     def validate_data(self, data_type: str, data: List[Dict]) -> Dict[str, Any]:
         """Ejecuta validaciones de calidad de datos y retorna dict con resultados."""
@@ -52,6 +55,19 @@ class DataQualityChecker:
         Mensajes contienen las frases que usan los tests ('price < 0', 'rating_rate > 5').
         """
         errors = []
+        # completeness checks
+        field_counts = {}
+        total = len(products)
+        for p in products:
+            for k, v in p.items():
+                field_counts.setdefault(k, 0)
+                if v not in (None, '', []):
+                    field_counts[k] += 1
+
+        for fld, cnt in field_counts.items():
+            null_ratio = 1.0 - (cnt / total) if total else 0.0
+            if null_ratio >= self.null_threshold:
+                errors.append(f"products: Campo '{fld}' tiene {null_ratio:.2%} nulos")
         for p in products:
             pid = p.get('product_id') or p.get('id') or 'unknown'
             # price > 0
@@ -70,15 +86,59 @@ class DataQualityChecker:
                         errors.append(f"Product {pid}: rating_rate > 5" if rr > 5 else f"Product {pid}: rating_rate < 0")
                 except Exception:
                     errors.append(f"Product {pid}: rating_rate invalid")
+
+        # duplicates check simple: by product_id
+        seen = set()
+        for p in products:
+            pid = p.get('product_id') or p.get('id')
+            if pid is None:
+                continue
+            if pid in seen:
+                errors.append(f"products: Duplicado product_id {pid}")
+            seen.add(pid)
         return errors
 
     def _validate_sales(self, sales: List[Dict]) -> List[str]:
-        # placeholder: implement sales-specific checks if needed
-        return []
+        errors = []
+        # Basic completeness and ranges
+        for i, s in enumerate(sales):
+            if s.get('quantity') is None:
+                errors.append(f"sales {i}: quantity faltante")
+            else:
+                try:
+                    if int(s.get('quantity')) <= 0:
+                        errors.append(f"sales {i}: quantity <= 0")
+                except Exception:
+                    errors.append(f"sales {i}: quantity inválida")
+
+            if s.get('unit_price') is None and s.get('total_amount') is None:
+                errors.append(f"sales {i}: price/total faltante")
+
+        # detect duplicates by cart_id+product_id
+        seen = set()
+        for s in sales:
+            key = (s.get('cart_id'), s.get('product_id'))
+            if key in seen:
+                errors.append(f"sales: Duplicado cart_id/product_id {key}")
+            seen.add(key)
+        return errors
 
     def _validate_users(self, users: List[Dict]) -> List[str]:
-        # placeholder: implement user-specific checks if needed
-        return []
+        errors = []
+        # completeness for critical fields
+        for i, u in enumerate(users):
+            if u.get('user_id') is None and u.get('id') is None:
+                errors.append(f"users {i}: user_id faltante")
+            if not u.get('email'):
+                errors.append(f"users {i}: email faltante")
+        # uniqueness on user_id
+        seen = set()
+        for u in users:
+            uid = u.get('user_id') or u.get('id')
+            if uid in seen:
+                errors.append(f"users: Duplicado user_id {uid}")
+            seen.add(uid)
+        return errors
 
     def _validate_completeness(self, data_type: str, data: List[Dict]) -> List[str]:
         # simple completeness: check for critical fields if config defines them
@@ -92,12 +152,23 @@ class DataQualityChecker:
         return errors
 
     def _validate_uniqueness(self, data_type: str, data: List[Dict]) -> List[str]:
-        return []
+        # generic uniqueness checks if config specifies key fields
+        errors = []
+        key_fields = self.rules.get(data_type, {}).get('unique_keys', [])
+        if not key_fields:
+            return errors
+        seen = set()
+        for i, rec in enumerate(data):
+            key = tuple(rec.get(f) for f in key_fields)
+            if key in seen:
+                errors.append(f"{data_type} {i}: duplicado en keys {key_fields} -> {key}")
+            seen.add(key)
+        return errors
 
     def _validate_referential_integrity(self, sales: List[Dict], products: List[Dict], users: List[Dict]) -> List[str]:
         errors = []
-        valid_product_ids = {p['product_id'] for p in products if 'product_id' in p}
-        valid_user_ids = {u['user_id'] for u in users if 'user_id' in u}
+        valid_product_ids = {p.get('product_id') or p.get('id') for p in products if p.get('product_id') is not None or p.get('id') is not None}
+        valid_user_ids = {u.get('user_id') or u.get('id') for u in users if u.get('user_id') is not None or u.get('id') is not None}
         for sale in sales:
             pid = sale.get('product_id')
             uid = sale.get('user_id')
