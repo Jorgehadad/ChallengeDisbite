@@ -83,28 +83,6 @@ DETAIL:  Ya existe la llave (date_key)=(20200101).
 2025-10-20 00:13:08,368 - __main__ - ERROR - Error en pipeline ETL: llave duplicada viola restricción de unicidad «dim_date_pkey»
 DETAIL:  Ya existe la llave (date_key)=(20200101).
 
-2025-10-20 00:13:08,368 - root - CRITICAL - Excepción no capturada:
-Traceback (most recent call last):
-  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 256, in <module>
-    pipeline.run()
-    ~~~~~~~~~~~~^^
-  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 90, in run
-    self._load_phase(transformed_data)
-    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
-  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 228, in _load_phase
-    self.loader.load_data(data_type, transformed_data[data_type])
-    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 121, in load_data
-    self._insert_batch(resolved_table, batch)
-    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 171, in _insert_batch
-    psycopg2.extras.execute_batch(cursor, query, data_tuples)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
-    cur.execute(b";".join(sqls))
-    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
-psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «dim_date_pkey»
-DETAIL:  Ya existe la llave (date_key)=(20200101).
 
 2025-10-20 00:13:16,224 - __main__ - INFO - Iniciando pipeline ETL
 2025-10-20 00:13:16,225 - __main__ - INFO - Iniciando fase EXTRACT
@@ -146,3 +124,914 @@ Errors found: 0
 2025-10-20 00:13:16,710 - __main__ - INFO - Pipeline ETL completado en 0:00:00.485572
 2025-10-20 00:13:16,710 - __main__ - INFO - Registros procesados: 116
 2025-10-20 00:13:16,711 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:21:44,668 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:21:44,669 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:21:44,669 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:21:44,670 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:21:44,670 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:21:44,671 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:21:44,671 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:21:44,672 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:21:44,672 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:21:44,672 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:21:44,673 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:21:44,674 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:21:44,674 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:21:44,674 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:21:44,674 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:21:44,675 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:21:44,676 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:21:44,676 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:21:44,676 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:21:44,676 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:21:44,676 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:21:44,676 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:21:44,676 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 10:21:44,676 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:21:44,678 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:21:44,679 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:21:44,680 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:21:44,680 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:21:44,681 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:21:44,681 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:21:44,681 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:21:44,681 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:21:44,729 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:21:44,761 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:21:44,798 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:21:44,798 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:21:44,831 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:21:44,868 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:21:44,868 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:21:44,901 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:21:44,936 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:21:44,936 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:21:44,968 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:21:45,002 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:21:45,003 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:21:45,035 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:21:45,071 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:21:45,072 - __main__ - INFO - Pipeline ETL completado en 0:00:00.403699
+2025-10-20 10:21:45,072 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:21:45,072 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:21:45,073 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:21:45,073 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:21:45,073 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:21:45,073 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:21:45,073 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:21:45,074 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:21:45,075 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:21:45,075 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:21:45,075 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:21:45,075 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:21:45,076 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:21:45,076 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:21:45,077 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:21:45,077 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:21:45,077 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:21:45,078 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:21:45,078 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:21:45,078 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:21:45,078 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:21:45,078 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:21:45,079 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:21:45,079 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:21:45,079 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 10:21:45,079 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:21:45,080 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:21:45,081 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:21:45,081 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:21:45,082 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:21:45,083 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:21:45,086 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:21:45,087 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:21:45,087 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:21:45,123 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:21:45,155 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:21:45,189 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:21:45,189 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:21:45,223 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:21:45,259 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:21:45,260 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:21:45,293 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:21:45,327 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:21:45,327 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:21:45,362 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:21:45,399 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:21:45,402 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:21:45,444 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:21:45,479 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:21:45,480 - __main__ - INFO - Pipeline ETL completado en 0:00:00.406999
+2025-10-20 10:21:45,480 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:21:45,480 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:21:50,416 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:21:50,417 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:21:50,417 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:21:50,417 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:21:50,418 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:21:50,419 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:21:50,419 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:21:50,419 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:21:50,419 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:21:50,419 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:21:50,420 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:21:50,420 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:21:50,420 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:21:50,420 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:21:50,421 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:21:50,421 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:21:50,422 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:21:50,422 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:21:50,422 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:21:50,422 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:21:50,422 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:21:50,422 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:21:50,423 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 10:21:50,424 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:21:50,424 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:21:50,426 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:21:50,426 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:21:50,428 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:21:50,429 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:21:50,429 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:21:50,429 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:21:50,429 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:21:50,478 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:21:50,510 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:21:50,546 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:21:50,546 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:21:50,588 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:21:50,623 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:21:50,624 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:21:50,656 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:21:50,692 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:21:50,692 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:21:50,726 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:21:50,760 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:21:50,760 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:21:50,794 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:21:50,830 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:21:50,831 - __main__ - INFO - Pipeline ETL completado en 0:00:00.414189
+2025-10-20 10:21:50,831 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:21:50,835 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:21:50,835 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:21:50,835 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:21:50,836 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:21:50,837 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:21:50,837 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:21:50,838 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:21:50,838 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:21:50,838 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:21:50,838 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:21:50,839 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:21:50,839 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:21:50,839 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:21:50,839 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:21:50,840 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:21:50,840 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:21:50,841 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:21:50,841 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:21:50,841 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:21:50,841 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:21:50,841 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:21:50,841 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:21:50,841 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:21:50,841 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 10:21:50,841 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:21:50,842 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:21:50,843 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:21:50,843 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:21:50,844 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:21:50,845 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:21:50,845 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:21:50,845 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:21:50,845 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:21:50,880 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:21:50,915 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:21:50,947 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:21:50,947 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:21:50,980 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:21:51,017 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:21:51,018 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:21:51,051 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:21:51,084 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:21:51,084 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:21:51,117 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:21:51,150 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:21:51,150 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:21:51,187 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:21:51,222 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:21:51,222 - __main__ - INFO - Pipeline ETL completado en 0:00:00.387175
+2025-10-20 10:21:51,222 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:21:51,223 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:21:59,870 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:21:59,870 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:21:59,870 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:21:59,871 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:21:59,871 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:21:59,872 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:21:59,872 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:21:59,872 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:21:59,872 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:21:59,873 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:21:59,874 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:21:59,874 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:21:59,874 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:21:59,874 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:21:59,875 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:21:59,876 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:21:59,876 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:21:59,876 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:21:59,876 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:21:59,876 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:21:59,876 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:21:59,876 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:21:59,877 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 10:21:59,877 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:21:59,878 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:21:59,878 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:21:59,879 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:21:59,880 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:21:59,881 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:21:59,881 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:21:59,882 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:21:59,882 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:21:59,931 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:21:59,964 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:21:59,996 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:21:59,997 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:22:00,029 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:22:00,065 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:22:00,065 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:22:00,100 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:22:00,133 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:22:00,133 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:22:00,164 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:22:00,200 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:22:00,200 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:22:00,235 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:22:00,271 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:22:00,271 - __main__ - INFO - Pipeline ETL completado en 0:00:00.401248
+2025-10-20 10:22:00,271 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:22:00,271 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:22:00,272 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:22:00,272 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:22:00,272 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:22:00,272 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:22:00,272 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:22:00,273 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:22:00,274 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:22:00,274 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:22:00,274 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:22:00,274 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:22:00,275 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:22:00,275 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:22:00,275 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:22:00,275 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:22:00,276 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:22:00,276 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:22:00,277 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:22:00,277 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:22:00,277 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:22:00,277 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:22:00,277 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:22:00,277 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:22:00,277 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 10:22:00,277 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:22:00,278 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:22:00,279 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:22:00,279 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:22:00,280 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:22:00,280 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:22:00,281 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:22:00,281 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:22:00,281 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:22:00,319 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:22:00,351 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:22:00,384 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:22:00,384 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:22:00,418 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:22:00,455 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:22:00,455 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:22:00,488 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:22:00,524 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:22:00,525 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:22:00,561 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:22:00,596 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:22:00,597 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:22:00,635 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:22:00,671 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:22:00,672 - __main__ - INFO - Pipeline ETL completado en 0:00:00.400239
+2025-10-20 10:22:00,673 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:22:00,673 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:29:42,964 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:29:42,966 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:29:42,966 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:29:42,967 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:29:42,968 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:29:42,970 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:29:42,970 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:29:42,970 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:29:42,971 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:29:42,973 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:29:42,975 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:29:42,976 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:29:42,976 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:29:42,976 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:29:42,977 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:29:42,981 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:29:42,982 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:29:42,982 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:29:42,982 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:29:42,982 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:29:42,983 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:29:42,984 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:29:42,984 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 10:29:42,985 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:29:42,987 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:29:42,989 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:29:42,990 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:29:42,998 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:29:43,003 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:29:43,004 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:29:43,004 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:29:43,004 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:29:43,004 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:29:43,064 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:29:43,120 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:29:43,121 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:29:43,152 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:29:43,187 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:29:43,188 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:29:43,219 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:29:43,253 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:29:43,253 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:29:43,285 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:29:43,321 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:29:43,321 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:29:43,360 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:29:43,403 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:29:43,403 - __main__ - INFO - Pipeline ETL completado en 0:00:00.439557
+2025-10-20 10:29:43,403 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:29:43,404 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:38:52,304 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:38:52,304 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:38:52,305 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:38:52,305 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:38:52,305 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:38:52,306 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:38:52,306 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:38:52,307 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:38:52,307 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:38:52,308 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:38:52,308 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:38:52,309 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:38:52,309 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:38:52,309 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:38:52,309 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:38:52,310 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:38:52,311 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:38:52,311 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:38:52,312 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:38:52,312 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 10:38:52,312 - src.transform - INFO - [TRANSFORM] products: 20 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 10:38:52,312 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:38:52,312 - src.transform - INFO - [TRANSFORM] users: aplanando address/geolocation y normalizando nombres/emails
+2025-10-20 10:38:52,312 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:38:52,312 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:38:52,312 - src.transform - INFO - [TRANSFORM] carts->sales: aplanando items y calculando metricas derivadas (total_amount)
+2025-10-20 10:38:52,312 - src.transform - INFO - [TRANSFORM] sales: 14 registros de ventas transformados (incluye total_amount)
+2025-10-20 10:38:52,312 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:38:52,313 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:38:52,314 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:38:52,315 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:38:52,316 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:38:52,317 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:38:52,317 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:38:52,317 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 10:38:52,317 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:38:52,317 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 10:38:52,317 - src.data_quality - INFO - [DQ] geography: validando completitud segun campos criticos de config
+2025-10-20 10:38:52,317 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 10:38:52,318 - src.data_quality - INFO - [DQ] dates: validando completitud segun campos criticos de config
+2025-10-20 10:38:52,318 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 10:38:52,318 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 10:38:52,318 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 0
+2025-10-20 10:38:52,318 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 58. Errores: 0
+2025-10-20 10:38:52,318 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:38:52,318 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:38:52,318 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:38:52,367 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:38:52,407 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:38:52,407 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:38:52,440 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:38:52,477 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:38:52,478 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:38:52,511 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:38:52,546 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:38:52,547 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:38:52,584 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:38:52,620 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:38:52,621 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:38:52,656 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:38:52,693 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:38:52,694 - __main__ - INFO - Pipeline ETL completado en 0:00:00.389925
+2025-10-20 10:38:52,694 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:38:52,694 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:42:14,683 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:42:14,683 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:42:14,684 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:42:14,684 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:42:14,685 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:42:14,686 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:42:14,686 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:42:14,686 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:42:14,687 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:42:14,687 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:42:14,688 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:42:14,688 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:42:14,689 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:42:14,689 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:42:14,689 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:42:14,690 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:42:14,691 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:42:14,691 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:42:14,691 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:42:14,692 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 10:42:14,692 - src.transform - INFO - [TRANSFORM] products: 20 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 10:42:14,692 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:42:14,692 - src.transform - INFO - [TRANSFORM] users: aplanando address/geolocation y normalizando nombres/emails
+2025-10-20 10:42:14,692 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:42:14,693 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:42:14,693 - src.transform - INFO - [TRANSFORM] carts->sales: aplanando items y calculando metricas derivadas (total_amount)
+2025-10-20 10:42:14,693 - src.transform - INFO - [TRANSFORM] sales: 14 registros de ventas transformados (incluye total_amount)
+2025-10-20 10:42:14,693 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:42:14,696 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:42:14,697 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:42:14,698 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:42:14,699 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:42:14,700 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:42:14,700 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:42:14,701 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 10:42:14,702 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:42:14,702 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 10:42:14,703 - src.data_quality - INFO - [DQ] geography: validando completitud segun campos criticos de config
+2025-10-20 10:42:14,703 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 10:42:14,705 - src.data_quality - INFO - [DQ] dates: validando completitud segun campos criticos de config
+2025-10-20 10:42:14,705 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 10:42:14,705 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 10:42:14,706 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 0
+2025-10-20 10:42:14,706 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 58. Errores: 0
+2025-10-20 10:42:14,706 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:42:14,707 - __main__ - INFO - Iniciando fase TESTS (pytest): validando reglas y transformaciones
+2025-10-20 10:42:15,106 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:42:15,138 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 10:42:15,139 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 10:42:15,142 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:42:15,145 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 10:42:15,146 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 10:42:15,147 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:42:15,149 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 10:42:15,150 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 10:42:15,151 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 10:42:15,152 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 10:42:15,153 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 6. Errores: 3
+2025-10-20 10:42:15,157 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 10:42:15,179 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 10:42:15,182 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 10:42:15,183 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 10:42:15,187 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 10:42:15,189 - src.extract - ERROR - Error API para products: None: Max retries exceeded with url: https://fakestoreapi.com/products (Caused by ResponseError('too many 503 error responses'))
+2025-10-20 10:42:15,228 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 10:42:15,232 - src.transform - INFO - [TRANSFORM] products: 1 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 10:42:15,352 - __main__ - INFO - Tests OK. Continuando con fase LOAD.
+2025-10-20 10:42:15,352 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:42:15,352 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:42:15,401 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:42:15,437 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:42:15,438 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:42:15,472 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:42:15,527 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:42:15,528 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:42:15,565 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:42:15,599 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:42:15,599 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:42:15,634 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:42:15,671 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:42:15,671 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:42:15,704 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:42:15,740 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:42:15,740 - __main__ - INFO - Pipeline ETL completado en 0:00:01.057287
+2025-10-20 10:42:15,740 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:42:15,740 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 10:53:32,803 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 10:53:32,803 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 10:53:32,804 - __main__ - INFO - Procesando datos de products
+2025-10-20 10:53:32,804 - __main__ - INFO - Cargando products desde caché
+2025-10-20 10:53:32,805 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 10:53:32,807 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 10:53:32,853 - __main__ - INFO - Muestra raw->products (primer registro):
+ id                                                 title  price                                                                                                                         description       category                                                     image                      rating
+  1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday men's clothing https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png {'rate': 3.9, 'count': 120}
+2025-10-20 10:53:32,853 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 10:53:32,853 - __main__ - INFO - Procesando datos de carts
+2025-10-20 10:53:32,854 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 10:53:32,854 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 10:53:32,855 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 10:53:32,856 - __main__ - INFO - Muestra raw->carts (primer registro):
+ id  userId                     date                                                                                            products  __v
+  1       1 2020-03-02T00:00:00.000Z [{'productId': 1, 'quantity': 4}, {'productId': 2, 'quantity': 1}, {'productId': 3, 'quantity': 6}]    0
+2025-10-20 10:53:32,856 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 10:53:32,856 - __main__ - INFO - Procesando datos de users
+2025-10-20 10:53:32,857 - __main__ - INFO - Cargando users desde caché
+2025-10-20 10:53:32,857 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 10:53:32,858 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 10:53:32,860 - __main__ - INFO - Muestra raw->users (primer registro):
+                                                                                                                                   address  id          email username password                                     name          phone  __v
+{'geolocation': {'lat': '-37.3159', 'long': '81.1496'}, 'city': 'kilcoole', 'street': 'new road', 'number': 7682, 'zipcode': '12926-3874'}   1 john@gmail.com    johnd  m38rmF$ {'firstname': 'john', 'lastname': 'doe'} 1-570-236-7033    0
+2025-10-20 10:53:32,860 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 10:53:32,860 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 10:53:32,860 - __main__ - INFO - Transformando datos de productos
+2025-10-20 10:53:32,860 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 10:53:32,860 - src.transform - INFO - [TRANSFORM] products: 20 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 10:53:32,862 - __main__ - INFO - Muestra transform->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 10:53:32,862 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 10:53:32,862 - src.transform - INFO - [TRANSFORM] users: aplanando address/geolocation y normalizando nombres/emails
+2025-10-20 10:53:32,863 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 10:53:32,869 - __main__ - INFO - Muestra transform->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 10:53:32.863071
+2025-10-20 10:53:32,871 - __main__ - INFO - Muestra transform->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 10:53:32.863077
+2025-10-20 10:53:32,871 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 10:53:32,871 - src.transform - INFO - [TRANSFORM] carts->sales: aplanando items y calculando metricas derivadas (total_amount)
+2025-10-20 10:53:32,871 - src.transform - INFO - [TRANSFORM] sales: 14 registros de ventas transformados (incluye total_amount)
+2025-10-20 10:53:32,875 - __main__ - INFO - Muestra transform->sales (primer registro):
+ cart_id  user_id  product_id                      date  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00         4      109.95         439.8 2025-10-20 10:53:32.871878
+2025-10-20 10:53:32,875 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 10:53:32,877 - __main__ - INFO - Muestra transform->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 10:53:32,878 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 10:53:32,879 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 10:53:32,880 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 10:53:32,881 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 10:53:32,881 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 10:53:32,882 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 10:53:32,882 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 10:53:32,882 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:53:32,882 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 10:53:32,882 - src.data_quality - INFO - [DQ] geography: validando completitud segun campos criticos de config
+2025-10-20 10:53:32,882 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 10:53:32,882 - src.data_quality - INFO - [DQ] dates: validando completitud segun campos criticos de config
+2025-10-20 10:53:32,883 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 10:53:32,884 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 10:53:32,884 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 0
+2025-10-20 10:53:32,884 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 58. Errores: 0
+2025-10-20 10:53:32,885 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 10:53:32,885 - __main__ - INFO - Iniciando fase TESTS (pytest): validando reglas y transformaciones
+2025-10-20 10:53:33,000 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:53:33,020 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 10:53:33,021 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 10:53:33,025 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:53:33,029 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 10:53:33,030 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 10:53:33,031 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 10:53:33,032 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 10:53:33,033 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 10:53:33,034 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 10:53:33,035 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 10:53:33,037 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 6. Errores: 3
+2025-10-20 10:53:33,048 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 10:53:33,051 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 10:53:33,054 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 10:53:33,056 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 10:53:33,058 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 10:53:33,061 - src.extract - ERROR - Error API para products: None: Max retries exceeded with url: https://fakestoreapi.com/products (Caused by ResponseError('too many 503 error responses'))
+2025-10-20 10:53:33,065 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 10:53:33,067 - src.transform - INFO - [TRANSFORM] products: 1 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 10:53:33,150 - __main__ - INFO - Tests OK. Continuando con fase LOAD.
+2025-10-20 10:53:33,151 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 10:53:33,151 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 10:53:33,152 - __main__ - INFO - Muestra load->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 10:53:33,206 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 10:53:33,240 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 10:53:33,241 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 10:53:33,243 - __main__ - INFO - Muestra load->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 10:53:33,275 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 10:53:33,338 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 10:53:33,339 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 10:53:33,341 - __main__ - INFO - Muestra load->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 10:53:32.863071
+2025-10-20 10:53:33,381 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 10:53:33,419 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 10:53:33,419 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 10:53:33,421 - __main__ - INFO - Muestra load->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 10:53:32.863077
+2025-10-20 10:53:33,453 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 10:53:33,494 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 10:53:33,494 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 10:53:33,497 - __main__ - INFO - Muestra load->sales (primer registro):
+ cart_id  user_id  product_id                      date  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00         4      109.95         439.8 2025-10-20 10:53:32.871878
+2025-10-20 10:53:33,533 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 10:53:33,586 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 10:53:33,587 - __main__ - INFO - Pipeline ETL completado en 0:00:00.784080
+2025-10-20 10:53:33,587 - __main__ - INFO - Registros procesados: 116
+2025-10-20 10:53:33,588 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 11:30:17,377 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 11:30:17,378 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 11:30:17,379 - __main__ - INFO - Procesando datos de products
+2025-10-20 11:30:17,380 - __main__ - INFO - Cargando products desde caché
+2025-10-20 11:30:17,381 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 11:30:17,384 - __main__ - INFO - Raw data guardada en C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 11:30:17,402 - __main__ - INFO - Muestra raw->products (primer registro):
+ id                                                 title  price                                                                                                                         description       category                                                     image                      rating
+  1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday men's clothing https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png {'rate': 3.9, 'count': 120}
+2025-10-20 11:30:17,402 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 11:30:17,403 - __main__ - INFO - Procesando datos de carts
+2025-10-20 11:30:17,404 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 11:30:17,405 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 11:30:17,407 - __main__ - INFO - Raw data guardada en C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 11:30:17,410 - __main__ - INFO - Muestra raw->carts (primer registro):
+ id  userId                     date                                                                                            products  __v
+  1       1 2020-03-02T00:00:00.000Z [{'productId': 1, 'quantity': 4}, {'productId': 2, 'quantity': 1}, {'productId': 3, 'quantity': 6}]    0
+2025-10-20 11:30:17,410 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 11:30:17,410 - __main__ - INFO - Procesando datos de users
+2025-10-20 11:30:17,411 - __main__ - INFO - Cargando users desde caché
+2025-10-20 11:30:17,412 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 11:30:17,413 - __main__ - INFO - Raw data guardada en C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 11:30:17,416 - __main__ - INFO - Muestra raw->users (primer registro):
+                                                                                                                                   address  id          email username password                                     name          phone  __v
+{'geolocation': {'lat': '-37.3159', 'long': '81.1496'}, 'city': 'kilcoole', 'street': 'new road', 'number': 7682, 'zipcode': '12926-3874'}   1 john@gmail.com    johnd  m38rmF$ {'firstname': 'john', 'lastname': 'doe'} 1-570-236-7033    0
+2025-10-20 11:30:17,416 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 11:30:17,416 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 11:30:17,416 - __main__ - INFO - Transformando datos de productos
+2025-10-20 11:30:17,416 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 11:30:17,416 - src.transform - INFO - [TRANSFORM] products: 20 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 11:30:17,419 - __main__ - INFO - Muestra transform->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 11:30:17,420 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 11:30:17,420 - src.transform - INFO - [TRANSFORM] users: aplanando address/geolocation y normalizando nombres/emails
+2025-10-20 11:30:17,420 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 11:30:17,426 - __main__ - INFO - Muestra transform->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 11:30:17.420241
+2025-10-20 11:30:17,428 - __main__ - INFO - Muestra transform->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 11:30:17.420250
+2025-10-20 11:30:17,428 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 11:30:17,428 - src.transform - INFO - [TRANSFORM] carts->sales: aplanando items y calculando metricas derivadas (total_amount)
+2025-10-20 11:30:17,429 - src.transform - INFO - [TRANSFORM] sales: 14 registros de ventas transformados (incluye total_amount)
+2025-10-20 11:30:17,433 - __main__ - INFO - Muestra transform->sales (primer registro):
+ cart_id  user_id  product_id                      date  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00         4      109.95         439.8 2025-10-20 11:30:17.429035
+2025-10-20 11:30:17,434 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 11:30:17,436 - __main__ - INFO - Muestra transform->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 11:30:17,437 - __main__ - INFO - Processed data guardada en C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 11:30:17,439 - __main__ - INFO - Processed data guardada en C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 11:30:17,441 - __main__ - INFO - Processed data guardada en C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 11:30:17,443 - __main__ - INFO - Processed data guardada en C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 11:30:17,444 - __main__ - INFO - Processed data guardada en C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 11:30:17,445 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 11:30:17,445 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 11:30:17,445 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 11:30:17,445 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 11:30:17,445 - src.data_quality - INFO - [DQ] geography: validando completitud segun campos criticos de config
+2025-10-20 11:30:17,445 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 11:30:17,445 - src.data_quality - INFO - [DQ] dates: validando completitud segun campos criticos de config
+2025-10-20 11:30:17,446 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 11:30:17,446 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 11:30:17,446 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 0
+2025-10-20 11:30:17,446 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 58. Errores: 0
+2025-10-20 11:30:17,446 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 11:30:17,446 - __main__ - INFO - Iniciando fase TESTS (pytest): validando reglas y transformaciones
+2025-10-20 11:30:17,673 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 11:30:17,678 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 11:30:17,678 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 11:30:17,684 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 11:30:17,692 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 11:30:17,692 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 11:30:17,692 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 11:30:17,693 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 11:30:17,693 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 11:30:17,694 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 11:30:17,694 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 11:30:17,694 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 6. Errores: 3
+2025-10-20 11:30:17,702 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 11:30:17,706 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 11:30:17,709 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 11:30:17,711 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 11:30:17,714 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 11:30:17,715 - src.extract - ERROR - Error API para products: None: Max retries exceeded with url: https://fakestoreapi.com/products (Caused by ResponseError('too many 503 error responses'))
+2025-10-20 11:30:17,718 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 11:30:17,718 - src.transform - INFO - [TRANSFORM] products: 1 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 11:30:17,849 - __main__ - INFO - Tests OK. Continuando con fase LOAD.
+2025-10-20 11:30:17,850 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 11:30:17,850 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 11:30:17,854 - __main__ - INFO - Muestra load->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 11:30:17,953 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 11:30:18,016 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 11:30:18,016 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 11:30:18,021 - __main__ - INFO - Muestra load->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 11:30:18,093 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 11:30:18,156 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 11:30:18,157 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 11:30:18,160 - __main__ - INFO - Muestra load->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 11:30:17.420241
+2025-10-20 11:30:18,219 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 11:30:18,277 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 11:30:18,277 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 11:30:18,281 - __main__ - INFO - Muestra load->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 11:30:17.420250
+2025-10-20 11:30:18,340 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 11:30:18,426 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 11:30:18,427 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 11:30:18,431 - __main__ - INFO - Muestra load->sales (primer registro):
+ cart_id  user_id  product_id                      date  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00         4      109.95         439.8 2025-10-20 11:30:17.429035
+2025-10-20 11:30:18,500 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 11:30:18,574 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 11:30:18,574 - __main__ - INFO - Pipeline ETL completado en 0:00:01.197181
+2025-10-20 11:30:18,575 - __main__ - INFO - Registros procesados: 116
+2025-10-20 11:30:18,575 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 11:36:34,839 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 11:36:34,840 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 11:36:34,840 - __main__ - INFO - Procesando datos de products
+2025-10-20 11:36:34,841 - __main__ - INFO - Cargando products desde caché
+2025-10-20 11:36:34,842 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 11:36:34,843 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 11:36:34,849 - __main__ - INFO - Muestra raw->products (primer registro):
+ id                                                 title  price                                                                                                                         description       category                                                     image                      rating
+  1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday men's clothing https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png {'rate': 3.9, 'count': 120}
+2025-10-20 11:36:34,850 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 11:36:34,850 - __main__ - INFO - Procesando datos de carts
+2025-10-20 11:36:34,851 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 11:36:34,851 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 11:36:34,853 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 11:36:34,858 - __main__ - INFO - Muestra raw->carts (primer registro):
+ id  userId                     date                                                                                            products  __v
+  1       1 2020-03-02T00:00:00.000Z [{'productId': 1, 'quantity': 4}, {'productId': 2, 'quantity': 1}, {'productId': 3, 'quantity': 6}]    0
+2025-10-20 11:36:34,859 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 11:36:34,859 - __main__ - INFO - Procesando datos de users
+2025-10-20 11:36:34,860 - __main__ - INFO - Cargando users desde caché
+2025-10-20 11:36:34,861 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 11:36:34,862 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 11:36:34,867 - __main__ - INFO - Muestra raw->users (primer registro):
+                                                                                                                                   address  id          email username password                                     name          phone  __v
+{'geolocation': {'lat': '-37.3159', 'long': '81.1496'}, 'city': 'kilcoole', 'street': 'new road', 'number': 7682, 'zipcode': '12926-3874'}   1 john@gmail.com    johnd  m38rmF$ {'firstname': 'john', 'lastname': 'doe'} 1-570-236-7033    0
+2025-10-20 11:36:34,868 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 11:36:34,868 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 11:36:34,868 - __main__ - INFO - Transformando datos de productos
+2025-10-20 11:36:34,869 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 11:36:34,869 - src.transform - INFO - [TRANSFORM] products: 20 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 11:36:34,873 - __main__ - INFO - Muestra transform->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 11:36:34,873 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 11:36:34,874 - src.transform - INFO - [TRANSFORM] users: aplanando address/geolocation y normalizando nombres/emails
+2025-10-20 11:36:34,874 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 11:36:34,877 - __main__ - INFO - Muestra transform->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 11:36:34.874414
+2025-10-20 11:36:34,880 - __main__ - INFO - Muestra transform->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 11:36:34.874422
+2025-10-20 11:36:34,880 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 11:36:34,880 - src.transform - INFO - [TRANSFORM] carts->sales: aplanando items y calculando metricas derivadas (total_amount)
+2025-10-20 11:36:34,881 - src.transform - INFO - [TRANSFORM] sales: 14 registros de ventas transformados (incluye total_amount)
+2025-10-20 11:36:34,884 - __main__ - INFO - Muestra transform->sales (primer registro):
+ cart_id  user_id  product_id                      date  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00         4      109.95         439.8 2025-10-20 11:36:34.881206
+2025-10-20 11:36:34,884 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 11:36:34,887 - __main__ - INFO - Muestra transform->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 11:36:34,889 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 11:36:34,890 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 11:36:34,891 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 11:36:34,893 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 11:36:34,894 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 11:36:34,894 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 11:36:34,894 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 11:36:34,894 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 11:36:34,895 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 11:36:34,895 - src.data_quality - INFO - [DQ] geography: validando completitud segun campos criticos de config
+2025-10-20 11:36:34,895 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 11:36:34,896 - src.data_quality - INFO - [DQ] dates: validando completitud segun campos criticos de config
+2025-10-20 11:36:34,896 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 11:36:34,896 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 11:36:34,897 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 0
+2025-10-20 11:36:34,897 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 58. Errores: 0
+2025-10-20 11:36:34,897 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 11:36:34,897 - __main__ - INFO - Iniciando fase TESTS (pytest): validando reglas y transformaciones
+2025-10-20 11:36:35,085 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 11:36:35,100 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 11:36:35,102 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 11:36:35,108 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 11:36:35,114 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 11:36:35,116 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 11:36:35,119 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 11:36:35,121 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 11:36:35,123 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 11:36:35,125 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 11:36:35,127 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 11:36:35,129 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 6. Errores: 3
+2025-10-20 11:36:35,137 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 11:36:35,144 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 11:36:35,149 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 11:36:35,152 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 11:36:35,156 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 11:36:35,159 - src.extract - ERROR - Error API para products: None: Max retries exceeded with url: https://fakestoreapi.com/products (Caused by ResponseError('too many 503 error responses'))
+2025-10-20 11:36:35,169 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 11:36:35,171 - src.transform - INFO - [TRANSFORM] products: 1 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 11:36:35,305 - __main__ - INFO - Tests OK. Continuando con fase LOAD.
+2025-10-20 11:36:35,305 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 11:36:35,306 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 11:36:35,310 - __main__ - INFO - Muestra load->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 11:36:35,408 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 11:36:35,470 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 11:36:35,470 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 11:36:35,474 - __main__ - INFO - Muestra load->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 11:36:35,534 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 11:36:35,596 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 11:36:35,597 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 11:36:35,600 - __main__ - INFO - Muestra load->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 11:36:34.874414
+2025-10-20 11:36:35,660 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 11:36:35,720 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 11:36:35,721 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 11:36:35,725 - __main__ - INFO - Muestra load->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 11:36:34.874422
+2025-10-20 11:36:35,786 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 11:36:35,848 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 11:36:35,849 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 11:36:35,853 - __main__ - INFO - Muestra load->sales (primer registro):
+ cart_id  user_id  product_id                      date  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00         4      109.95         439.8 2025-10-20 11:36:34.881206
+2025-10-20 11:36:35,914 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 11:36:35,981 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 11:36:35,982 - __main__ - INFO - Pipeline ETL completado en 0:00:01.143088
+2025-10-20 11:36:35,982 - __main__ - INFO - Registros procesados: 116
+2025-10-20 11:36:35,983 - __main__ - INFO - Errores encontrados: 0

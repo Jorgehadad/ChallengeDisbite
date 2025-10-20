@@ -7,6 +7,17 @@ import os
 import json
 from datetime import datetime
 from dotenv import load_dotenv
+import sys
+from collections import defaultdict
+from typing import Any, Iterable, List
+
+import pandas as pd
+
+# Ejecutar tests programáticamente
+try:
+    import pytest  # type: ignore
+except Exception:
+    pytest = None
 
 from src.extract import APIDataExtractor
 from src.transform import DataTransformer
@@ -15,7 +26,7 @@ from src.data_quality import DataQualityChecker
 from src.utils import setup_logging, load_config
 
 class ETLPipeline:
-    def __init__(self, config_path="config/config.yaml", force_refresh=False, ensure_min_records=False):
+    def __init__(self, config_path="config/config.yaml", force_refresh=False):
         """Inicializa el pipeline ETL con configuración."""
         # Get the directory containing the script
         self.script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -25,8 +36,6 @@ class ETLPipeline:
         # Load environment and config
         load_dotenv()
         self.force_refresh = force_refresh
-        # allow activation via constructor param or environment variable
-        self.ensure_min_records = bool(ensure_min_records) or bool(os.environ.get('ENSURE_MIN_RECORDS'))
         self.config = load_config(config_path)
         setup_logging()
         self.logger = logging.getLogger(__name__)
@@ -92,6 +101,45 @@ class ETLPipeline:
             'errors': []
         }
 
+    def _log_sample(self, data: Any, label: str, max_cols: int = 10) -> None:
+        """Loggea una muestra de los datos usando pandas si es posible."""
+        try:
+            if data is None:
+                self.logger.info(f"Muestra {label}: <sin datos>")
+                return
+
+            if isinstance(data, dict):
+                sample_dict = {k: data[k] for k in list(data.keys())[:max_cols]}
+                self.logger.info(
+                    f"Muestra {label}: {json.dumps(sample_dict, ensure_ascii=False, default=str)}"
+                )
+                return
+
+            if isinstance(data, Iterable) and not isinstance(data, (str, bytes)):
+                data_list = list(data)
+                if not data_list:
+                    self.logger.info(f"Muestra {label}: []")
+                    return
+
+                first = data_list[0]
+                if isinstance(first, dict):
+                    df = pd.DataFrame(data_list[:1])
+                    if df.empty:
+                        self.logger.info(f"Muestra {label}: <sin filas>")
+                        return
+                    if df.shape[1] > max_cols:
+                        df = df.iloc[:, :max_cols]
+                    sample_repr = df.to_string(index=False)
+                    self.logger.info(f"Muestra {label} (primer registro):\n{sample_repr}")
+                    return
+
+                self.logger.info(f"Muestra {label}: {first}")
+                return
+
+            self.logger.info(f"Muestra {label}: {data}")
+        except Exception as exc:
+            self.logger.warning(f"No se pudo loggear muestra para {label}: {exc}")
+
     def _get_cache_path(self, endpoint_name):
         """Retorna la ruta del archivo de caché para un endpoint."""
         return os.path.join(self.cache_dir, f"{endpoint_name}.json")
@@ -125,11 +173,16 @@ class ETLPipeline:
             transformed_data = self._transform_phase(raw_data)
             
             # DATA QUALITY
-            self._data_quality_phase(transformed_data)
+            dq_ok = self._data_quality_phase(transformed_data)
+            if not dq_ok:
+                self.logger.warning("Data Quality detectó problemas; registros inválidos fueron omitidos del LOAD.")
 
-            # Optionally ensure a minimal test record exists for each table
-            if getattr(self, 'ensure_min_records', False):
-                self._ensure_minimum_records(transformed_data)
+            # TESTS (pytest)
+            tests_ok = self._tests_phase()
+            if not tests_ok:
+                self.logger.warning("Tests fallidos. Se registraron errores, pero el LOAD continuará omitiendo registros inválidos.")
+
+            # (no synthetic fallback records by design)
 
             # LOAD
             self._load_phase(transformed_data)
@@ -175,6 +228,7 @@ class ETLPipeline:
                 except Exception as e:
                     self.logger.warning(f"No se pudo guardar raw data {endpoint_name}: {e}")
                 
+                self._log_sample(raw_data[endpoint_name], f"raw->{endpoint_name}")
                 self.logger.info(f"Procesados {len(raw_data[endpoint_name])} registros de {endpoint_name}")
                 
             except Exception as e:
@@ -197,6 +251,7 @@ class ETLPipeline:
             transformed_data['products'] = self.transformer.transform_products(
                 raw_data['products']
             )
+            self._log_sample(transformed_data['products'], "transform->products")
         
         # Transformar usuarios
         if 'users' in raw_data:
@@ -204,6 +259,8 @@ class ETLPipeline:
             users_data = self.transformer.transform_users(raw_data['users'])
             transformed_data['users'] = users_data['users']
             transformed_data['geography'] = users_data['geography']
+            self._log_sample(transformed_data['users'], "transform->users")
+            self._log_sample(transformed_data['geography'], "transform->geography")
         
         # Transformar carritos
         if 'carts' in raw_data:
@@ -211,19 +268,15 @@ class ETLPipeline:
             transformed_data['sales'] = self.transformer.transform_carts(
                 raw_data['carts'], raw_data.get('products', [])
             )
+            self._log_sample(transformed_data['sales'], "transform->sales")
         
         # Debugging de dimensión de tiempo
         self.logger.info("Generando dimensión de tiempo")
         dates = self.transformer.generate_date_dimension(
             transformed_data.get('sales', [])
         )
-        # Agregar logging de debug
-        if dates:
-            sample_date = dates[0]
-            self.logger.debug(f"Muestra de fecha transformada: {sample_date}")
-            self.logger.debug(f"Columnas generadas: {list(sample_date.keys())}")
-        
         transformed_data['dates'] = dates
+        self._log_sample(transformed_data['dates'], "transform->dates")
 
         # Persistir datos procesados en disk
         try:
@@ -238,26 +291,152 @@ class ETLPipeline:
         return transformed_data
 
     def _data_quality_phase(self, transformed_data):
-        """Fase de validación de calidad de datos."""
+        """Fase de validacion de calidad de datos."""
         self.logger.info("Iniciando fase DATA QUALITY")
-        
-        # Validar todo el conjunto de datos
+
         validation_results = self.dq_checker.validate_full_dataset(transformed_data)
-        
+
         if not validation_results['is_valid']:
             self.logger.warning("Problemas de calidad de datos detectados:")
             for error in validation_results['errors']:
                 self.logger.warning(f"  - {error}")
-        
-        # Generar reporte
+
         report = self.dq_checker.generate_dq_report(validation_results)
         self.logger.info("\n" + report)
-        
-        # Actualizar estadísticas
+
+        self._apply_dq_exclusions(
+            transformed_data,
+            validation_results.get('error_details', [])
+        )
+
         self.stats['records_processed'] = validation_results['records_checked']
         self.stats['errors'].extend(validation_results['errors'])
-        
+
         return validation_results['is_valid']
+
+    def _apply_dq_exclusions(self, transformed_data, error_details):
+        # Remove invalid records flagged by data quality checks before LOAD.
+        if not error_details:
+            return
+
+        skipped = defaultdict(int)
+        products_reasons = defaultdict(list)
+        users_reasons = defaultdict(list)
+        geography_reasons = defaultdict(list)
+        sales_index_reasons = defaultdict(list)
+        sales_key_reasons = defaultdict(list)
+
+        for detail in error_details:
+            dataset = detail.get('dataset')
+            message = detail.get('message') or f"{dataset} validation failed"
+            if dataset == 'products' and detail.get('record_id') is not None:
+                products_reasons[detail['record_id']].append(message)
+            elif dataset == 'users' and detail.get('record_id') is not None:
+                users_reasons[detail['record_id']].append(message)
+            elif dataset == 'geography' and detail.get('record_id') is not None:
+                geography_reasons[detail['record_id']].append(message)
+            elif dataset == 'sales':
+                if detail.get('record_index') is not None:
+                    sales_index_reasons[detail['record_index']].append(message)
+                cart = detail.get('cart_id')
+                prod = detail.get('product_id')
+                if cart is not None and prod is not None:
+                    sales_key_reasons[(cart, prod)].append(message)
+
+        if products_reasons and 'products' in transformed_data:
+            filtered_products = []
+            for record in transformed_data['products']:
+                pid = record.get('product_id')
+                if pid in products_reasons:
+                    for msg in sorted(set(products_reasons[pid])):
+                        self.logger.warning(f"Omitiendo products product_id={pid}: {msg}")
+                    skipped['products'] += 1
+                    continue
+                filtered_products.append(record)
+            transformed_data['products'] = filtered_products
+
+        if users_reasons and 'users' in transformed_data:
+            filtered_users = []
+            for record in transformed_data['users']:
+                uid = record.get('user_id') or record.get('id')
+                if uid in users_reasons:
+                    for msg in sorted(set(users_reasons[uid])):
+                        self.logger.warning(f"Omitiendo users user_id={uid}: {msg}")
+                    skipped['users'] += 1
+                    continue
+                filtered_users.append(record)
+            transformed_data['users'] = filtered_users
+
+        invalid_user_ids = set(users_reasons.keys())
+        invalid_geo_ids = set(geography_reasons.keys()) | invalid_user_ids
+        if invalid_geo_ids and 'geography' in transformed_data:
+            filtered_geo = []
+            for record in transformed_data['geography']:
+                uid = record.get('user_id')
+                if uid in invalid_geo_ids:
+                    combined = geography_reasons.get(uid, []) + users_reasons.get(uid, [])
+                    reasons = sorted(set(combined)) or ['Usuario marcado como invalido']
+                    for msg in reasons:
+                        self.logger.warning(f"Omitiendo geography user_id={uid}: {msg}")
+                    skipped['geography'] += 1
+                    continue
+                filtered_geo.append(record)
+            transformed_data['geography'] = filtered_geo
+
+        invalid_product_ids = set(products_reasons.keys())
+        if 'sales' in transformed_data:
+            original_sales = transformed_data.get('sales', [])
+            filtered_sales = []
+            for idx, sale in enumerate(original_sales):
+                key = (sale.get('cart_id'), sale.get('product_id'))
+                reasons: List[str] = []
+                reasons.extend(sales_index_reasons.get(idx, []))
+                if None not in key:
+                    reasons.extend(sales_key_reasons.get(key, []))
+                pid = sale.get('product_id')
+                uid = sale.get('user_id')
+                if pid in invalid_product_ids:
+                    reasons.append(f"Producto {pid} descartado por DQ")
+                if uid in invalid_user_ids:
+                    reasons.append(f"Usuario {uid} descartado por DQ")
+                if reasons:
+                    for msg in sorted(set(reasons)):
+                        self.logger.warning(
+                            f"Omitiendo sales cart_id={sale.get('cart_id')} product_id={sale.get('product_id')}: {msg}"
+                        )
+                    skipped['sales'] += 1
+                    continue
+                filtered_sales.append(sale)
+            transformed_data['sales'] = filtered_sales
+
+        if skipped:
+            summary = ', '.join(f"{k}={v}" for k, v in sorted(skipped.items()))
+            self.logger.info(f"Registros omitidos por DQ: {summary}")
+
+
+    def _tests_phase(self):
+        """Ejecuta la suite de tests (pytest) como validacion previa a LOAD."""
+        self.logger.info("Iniciando fase TESTS (pytest): validando reglas y transformaciones")
+        tests_dir = os.path.join(self.script_dir, 'tests')
+        if not os.path.isdir(tests_dir):
+            self.logger.warning("Carpeta de tests no encontrada; omitiendo fase TESTS")
+            return True
+
+        if pytest is None:
+            self.logger.error("pytest no esta disponible. Instalarlo para ejecutar tests previos a LOAD.")
+            return False
+
+        try:
+            code = pytest.main(['-q', tests_dir])
+        except SystemExit as exc:
+            code = int(getattr(exc, 'code', 1) or 1)
+
+        if code != 0:
+            self.logger.error(f"Tests fallaron (exit code={code}). Revisar detalles arriba.")
+            return False
+
+        self.logger.info("Tests OK. Continuando con fase LOAD.")
+        return True
 
     def _load_phase(self, transformed_data):
         """Fase de carga a base de datos."""
@@ -266,16 +445,12 @@ class ETLPipeline:
         # Cargar en orden correcto para respetar constraints
         load_order = ['dates', 'products', 'users', 'geography', 'sales']
         
-        # Ensure minimum rows exist so tests can validate behavior even when
-        # the incoming payload doesn't add new rows.
-        try:
-            self.loader.ensure_minimum_rows()
-        except Exception as e:
-            self.logger.warning(f"ensure_minimum_rows failed: {e}")
+        # (no synthetic-row insertion)
 
         for data_type in load_order:
             if data_type in transformed_data and transformed_data[data_type]:
                 self.logger.info(f"Cargando {len(transformed_data[data_type])} registros de {data_type}")
+                self._log_sample(transformed_data[data_type], f"load->{data_type}")
                 try:
                     self.loader.load_data(data_type, transformed_data[data_type])
                     self.stats['records_processed'] += len(transformed_data[data_type])
@@ -285,97 +460,7 @@ class ETLPipeline:
                     self.stats['errors'].append(error_msg)
                     raise
 
-    def _ensure_minimum_records(self, transformed_data):
-        """Ensure there's at least one record per load table for testing.
-
-        This inserts minimal synthetic records into transformed_data for each
-        table in the load order if no real data is present. Values are chosen
-        to be harmless and unlikely to collide with production data.
-        """
-        self.logger.info("Ensuring minimum test records for each target table")
-        from datetime import datetime
-
-        # Helper ids unlikely to collide with real data (large numbers)
-        test_ids = {
-            'date_key': int(datetime.utcnow().strftime('%Y%m%d')),
-            'product_id': 99999999,
-            'user_id': 99999999,
-            'geography_id': 99999999,
-            'sale_id': 99999999,
-        }
-
-        # Minimal synthetic records per logical data_type
-        minimal = {}
-
-        # dates
-        if 'dates' not in transformed_data or not transformed_data.get('dates'):
-            dk = test_ids['date_key']
-            minimal_dates = [{
-                'date_key': dk,
-                'date': datetime.utcnow().date().isoformat(),
-                'day': datetime.utcnow().day,
-                'month': datetime.utcnow().month,
-                'year': datetime.utcnow().year,
-                'quarter': (datetime.utcnow().month - 1) // 3 + 1,
-                'iso_week': datetime.utcnow().isocalendar()[1],
-                'day_of_week': datetime.utcnow().isoweekday(),
-                'day_name': datetime.utcnow().strftime('%A'),
-                'month_name': datetime.utcnow().strftime('%B')
-            }]
-            minimal['dates'] = minimal_dates
-
-        # products
-        if 'products' not in transformed_data or not transformed_data.get('products'):
-            minimal_products = [{
-                'product_id': test_ids['product_id'],
-                'title': 'test_product',
-                'price': 0.0,
-                'description': 'synthetic test product',
-                'category': 'test',
-                'image_url': None,
-                'rating_rate': 0.0,
-                'rating_count': 0
-            }]
-            minimal['products'] = minimal_products
-
-        # users + geography
-        if 'users' not in transformed_data or not transformed_data.get('users'):
-            minimal_users = [{
-                'user_id': test_ids['user_id'],
-                'email': 'test@example.com',
-                'username': 'test_user',
-                'first_name': 'Test',
-                'last_name': 'User',
-                'phone': '0000000000'
-            }]
-            minimal_geo = [{
-                'geography_id': test_ids['geography_id'],
-                'city': 'TestCity',
-                'street': 'TestStreet',
-                'number': '0',
-                'zipcode': '0000',
-                'lat': None,
-                'long': None
-            }]
-            minimal['users'] = minimal_users
-            minimal['geography'] = minimal_geo
-
-        # sales (fact)
-        if 'sales' not in transformed_data or not transformed_data.get('sales'):
-            minimal_sales = [{
-                'sale_id': test_ids['sale_id'],
-                'date_key': minimal.get('dates', [{}])[0].get('date_key', test_ids['date_key']),
-                'product_id': minimal.get('products', [{}])[0].get('product_id', test_ids['product_id']),
-                'user_id': minimal.get('users', [{}])[0].get('user_id', test_ids['user_id']),
-                'quantity': 1,
-                'total_amount': 0.0
-            }]
-            minimal['sales'] = minimal_sales
-
-        # Merge minimal into transformed_data respecting existing keys
-        for k, v in minimal.items():
-            if k not in transformed_data or not transformed_data.get(k):
-                transformed_data[k] = v
+    # (synthetic-record insertion removed by user request)
 
     def _log_summary(self):
         """Registra resumen de la ejecución."""
@@ -394,10 +479,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Execute ETL pipeline')
     parser.add_argument('--force-refresh', action='store_true', 
                        help='Force refresh data from API instead of using cache')
-    parser.add_argument('--ensure-min-records', action='store_true',
-                       help='Ensure minimal test records are created if no data to load')
     args = parser.parse_args()
     
-    pipeline = ETLPipeline(force_refresh=args.force_refresh, ensure_min_records=args.ensure_min_records)
-    pipeline.run()
+    pipeline = ETLPipeline(force_refresh=args.force_refresh)
     pipeline.run()

@@ -2,7 +2,8 @@
 
 # data_quality.py - módulo generado automáticamente
 import logging
-from typing import Dict, List, Any
+from typing import Any, Dict, List, Tuple
+
 
 class DataQualityChecker:
     def __init__(self, config: Dict[str, Any]):
@@ -14,49 +15,54 @@ class DataQualityChecker:
         self.duplicate_threshold = self.config.get('data_quality', {}).get('duplicate_threshold', 0.0)
 
     def validate_data(self, data_type: str, data: List[Dict]) -> Dict[str, Any]:
-        """Ejecuta validaciones de calidad de datos y retorna dict con resultados."""
+        """Ejecuta validaciones por entidad y retorna resultados + metadata."""
         if not data:
             return {
                 'is_valid': False,
                 'errors': ['No data to validate'],
-                'records_checked': 0
+                'records_checked': 0,
+                'details': []
             }
 
-        errors = []
-        records_checked = 0
+        errors: List[str] = []
+        details: List[Dict[str, Any]] = []
+        records_checked = len(data)
 
         if data_type == 'products':
-            errs = self._validate_products(data)
-            errors.extend(errs)
-            records_checked = len(data)
+            self.logger.info(
+                "[DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id"
+            )
+            errs, dets = self._validate_products(data)
         elif data_type == 'sales':
-            errs = self._validate_sales(data)
-            errors.extend(errs)
-            records_checked = len(data)
+            self.logger.info(
+                "[DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id"
+            )
+            errs, dets = self._validate_sales(data)
         elif data_type == 'users':
-            errs = self._validate_users(data)
-            errors.extend(errs)
-            records_checked = len(data)
+            self.logger.info(
+                "[DQ] users: validando completitud (user_id, email) y unicidad de user_id"
+            )
+            errs, dets = self._validate_users(data)
         else:
-            # generic completeness/uniqueness checks if needed
-            errs = self._validate_completeness(data_type, data)
-            errors.extend(errs)
-            records_checked = len(data)
+            self.logger.info(f"[DQ] {data_type}: validando completitud segun campos criticos de config")
+            errs, dets = self._validate_completeness(data_type, data)
+
+        errors.extend(errs)
+        details.extend(dets)
 
         return {
             'is_valid': len(errors) == 0,
             'errors': errors,
-            'records_checked': records_checked
+            'records_checked': records_checked,
+            'details': details
         }
 
-    def _validate_products(self, products: List[Dict]) -> List[str]:
-        """Validaciones puntuales para products: rangos y completitud crítica.
-        Sólo valida campos presentes; no marca como error la ausencia de fields no críticos.
-        Mensajes contienen las frases que usan los tests ('price < 0', 'rating_rate > 5').
-        """
-        errors = []
-        # completeness checks
-        field_counts = {}
+    def _validate_products(self, products: List[Dict]) -> Tuple[List[str], List[Dict[str, Any]]]:
+        """Validaciones puntuales para products."""
+        errors: List[str] = []
+        details: List[Dict[str, Any]] = []
+
+        field_counts: Dict[str, int] = {}
         total = len(products)
         for p in products:
             for k, v in p.items():
@@ -67,93 +73,245 @@ class DataQualityChecker:
         for fld, cnt in field_counts.items():
             null_ratio = 1.0 - (cnt / total) if total else 0.0
             if null_ratio >= self.null_threshold:
-                errors.append(f"products: Campo '{fld}' tiene {null_ratio:.2%} nulos")
-        for p in products:
+                msg = f"products: Campo '{fld}' tiene {null_ratio:.2%} nulos"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'products',
+                    'field': fld,
+                    'issue': 'null_ratio',
+                    'threshold': self.null_threshold,
+                    'message': msg
+                })
+
+        for idx, p in enumerate(products):
             pid = p.get('product_id') or p.get('id') or 'unknown'
-            # price > 0
+            price_raw = p.get('price')
             if 'price' in p:
                 try:
-                    price = float(p.get('price'))
+                    price = float(price_raw)
                     if price <= 0:
-                        errors.append(f"Product {pid}: price < 0")
+                        msg = f"Product {pid}: price < 0"
+                        errors.append(msg)
+                        details.append({
+                            'dataset': 'products',
+                            'record_id': pid,
+                            'record_index': idx,
+                            'field': 'price',
+                            'issue': 'price<=0',
+                            'value': price,
+                            'message': msg
+                        })
                 except Exception:
-                    errors.append(f"Product {pid}: price invalid")
-            # rating_rate between 0 and 5
+                    msg = f"Product {pid}: price invalid"
+                    errors.append(msg)
+                    details.append({
+                        'dataset': 'products',
+                        'record_id': pid,
+                        'record_index': idx,
+                        'field': 'price',
+                        'issue': 'price_invalid',
+                        'message': msg
+                    })
+
             if 'rating_rate' in p:
                 try:
                     rr = float(p.get('rating_rate'))
                     if rr < 0 or rr > 5:
-                        errors.append(f"Product {pid}: rating_rate > 5" if rr > 5 else f"Product {pid}: rating_rate < 0")
+                        issue = 'rating_rate>5' if rr > 5 else 'rating_rate<0'
+                        msg = (
+                            f"Product {pid}: rating_rate > 5" if rr > 5 else f"Product {pid}: rating_rate < 0"
+                        )
+                        errors.append(msg)
+                        details.append({
+                            'dataset': 'products',
+                            'record_id': pid,
+                            'record_index': idx,
+                            'field': 'rating_rate',
+                            'issue': issue,
+                            'value': rr,
+                            'message': msg
+                        })
                 except Exception:
-                    errors.append(f"Product {pid}: rating_rate invalid")
+                    msg = f"Product {pid}: rating_rate invalid"
+                    errors.append(msg)
+                    details.append({
+                        'dataset': 'products',
+                        'record_id': pid,
+                        'record_index': idx,
+                        'field': 'rating_rate',
+                        'issue': 'rating_rate_invalid',
+                        'message': msg
+                    })
 
-        # duplicates check simple: by product_id
-        seen = set()
-        for p in products:
+        seen: Dict[Any, int] = {}
+        for idx, p in enumerate(products):
             pid = p.get('product_id') or p.get('id')
             if pid is None:
                 continue
             if pid in seen:
-                errors.append(f"products: Duplicado product_id {pid}")
-            seen.add(pid)
-        return errors
+                msg = f"products: Duplicado product_id {pid}"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'products',
+                    'record_id': pid,
+                    'record_index': idx,
+                    'issue': 'duplicate',
+                    'duplicate_of': seen[pid],
+                    'message': msg
+                })
+            else:
+                seen[pid] = idx
 
-    def _validate_sales(self, sales: List[Dict]) -> List[str]:
-        errors = []
-        # Basic completeness and ranges
-        for i, s in enumerate(sales):
-            if s.get('quantity') is None:
-                errors.append(f"sales {i}: quantity faltante")
+        return errors, details
+
+    def _validate_sales(self, sales: List[Dict]) -> Tuple[List[str], List[Dict[str, Any]]]:
+        errors: List[str] = []
+        details: List[Dict[str, Any]] = []
+
+        for idx, s in enumerate(sales):
+            quantity = s.get('quantity')
+            if quantity is None:
+                msg = f"sales {idx}: quantity faltante"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'sales',
+                    'record_index': idx,
+                    'cart_id': s.get('cart_id'),
+                    'product_id': s.get('product_id'),
+                    'field': 'quantity',
+                    'issue': 'missing',
+                    'message': msg
+                })
             else:
                 try:
-                    if int(s.get('quantity')) <= 0:
-                        errors.append(f"sales {i}: quantity <= 0")
+                    if int(quantity) <= 0:
+                        msg = f"sales {idx}: quantity <= 0"
+                        errors.append(msg)
+                        details.append({
+                            'dataset': 'sales',
+                            'record_index': idx,
+                            'cart_id': s.get('cart_id'),
+                            'product_id': s.get('product_id'),
+                            'field': 'quantity',
+                            'issue': 'quantity<=0',
+                            'value': quantity,
+                            'message': msg
+                        })
                 except Exception:
-                    errors.append(f"sales {i}: quantity inválida")
+                    msg = f"sales {idx}: quantity inválida"
+                    errors.append(msg)
+                    details.append({
+                        'dataset': 'sales',
+                        'record_index': idx,
+                        'cart_id': s.get('cart_id'),
+                        'product_id': s.get('product_id'),
+                        'field': 'quantity',
+                        'issue': 'invalid',
+                        'message': msg
+                    })
 
             if s.get('unit_price') is None and s.get('total_amount') is None:
-                errors.append(f"sales {i}: price/total faltante")
+                msg = f"sales {idx}: price/total faltante"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'sales',
+                    'record_index': idx,
+                    'cart_id': s.get('cart_id'),
+                    'product_id': s.get('product_id'),
+                    'field': 'unit_price',
+                    'issue': 'missing',
+                    'message': msg
+                })
 
-        # detect duplicates by cart_id+product_id
-        seen = set()
-        for s in sales:
+        seen: Dict[Tuple[Any, Any], int] = {}
+        for idx, s in enumerate(sales):
             key = (s.get('cart_id'), s.get('product_id'))
             if key in seen:
-                errors.append(f"sales: Duplicado cart_id/product_id {key}")
-            seen.add(key)
-        return errors
+                msg = f"sales: Duplicado cart_id/product_id {key}"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'sales',
+                    'record_index': idx,
+                    'cart_id': s.get('cart_id'),
+                    'product_id': s.get('product_id'),
+                    'issue': 'duplicate',
+                    'duplicate_of': seen[key],
+                    'message': msg
+                })
+            else:
+                seen[key] = idx
 
-    def _validate_users(self, users: List[Dict]) -> List[str]:
-        errors = []
-        # completeness for critical fields
-        for i, u in enumerate(users):
-            if u.get('user_id') is None and u.get('id') is None:
-                errors.append(f"users {i}: user_id faltante")
-            if not u.get('email'):
-                errors.append(f"users {i}: email faltante")
-        # uniqueness on user_id
-        seen = set()
-        for u in users:
-            uid = u.get('user_id') or u.get('id')
-            if uid in seen:
-                errors.append(f"users: Duplicado user_id {uid}")
-            seen.add(uid)
-        return errors
+        return errors, details
 
-    def _validate_completeness(self, data_type: str, data: List[Dict]) -> List[str]:
-        # simple completeness: check for critical fields if config defines them
-        errors = []
+    def _validate_users(self, users: List[Dict]) -> Tuple[List[str], List[Dict[str, Any]]]:
+        errors: List[str] = []
+        details: List[Dict[str, Any]] = []
+
+        for idx, user in enumerate(users):
+            uid = user.get('user_id') or user.get('id')
+            if uid is None:
+                msg = f"users {idx}: user_id faltante"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'users',
+                    'record_index': idx,
+                    'record_id': uid,
+                    'field': 'user_id',
+                    'issue': 'missing',
+                    'message': msg
+                })
+            if not user.get('email'):
+                msg = f"users {idx}: email faltante"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'users',
+                    'record_index': idx,
+                    'record_id': uid,
+                    'field': 'email',
+                    'issue': 'missing',
+                    'message': msg
+                })
+
+        seen: Dict[Any, int] = {}
+        for idx, user in enumerate(users):
+            uid = user.get('user_id') or user.get('id')
+            if uid in seen and uid is not None:
+                msg = f"users: Duplicado user_id {uid}"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'users',
+                    'record_index': idx,
+                    'record_id': uid,
+                    'issue': 'duplicate',
+                    'duplicate_of': seen[uid],
+                    'message': msg
+                })
+            else:
+                seen[uid] = idx
+
+        return errors, details
+
+    def _validate_completeness(self, data_type: str, data: List[Dict]) -> Tuple[List[str], List[Dict[str, Any]]]:
+        errors: List[str] = []
+        details: List[Dict[str, Any]] = []
         critical = self.rules.get(data_type, {}).get('critical_fields', [])
         if critical:
-            for i, rec in enumerate(data):
+            for idx, rec in enumerate(data):
                 for fld in critical:
                     if rec.get(fld) in (None, '', []):
-                        errors.append(f"{data_type} {i}: Campo crítico '{fld}' vacío")
-        return errors
+                        msg = f"{data_type} {idx}: Campo crítico '{fld}' vacío"
+                        errors.append(msg)
+                        details.append({
+                            'dataset': data_type,
+                            'record_index': idx,
+                            'field': fld,
+                            'issue': 'missing',
+                            'message': msg
+                        })
+        return errors, details
 
     def _validate_uniqueness(self, data_type: str, data: List[Dict]) -> List[str]:
-        # generic uniqueness checks if config specifies key fields
-        errors = []
+        errors: List[str] = []
         key_fields = self.rules.get(data_type, {}).get('unique_keys', [])
         if not key_fields:
             return errors
@@ -165,45 +323,97 @@ class DataQualityChecker:
             seen.add(key)
         return errors
 
-    def _validate_referential_integrity(self, sales: List[Dict], products: List[Dict], users: List[Dict]) -> List[str]:
-        errors = []
-        valid_product_ids = {p.get('product_id') or p.get('id') for p in products if p.get('product_id') is not None or p.get('id') is not None}
-        valid_user_ids = {u.get('user_id') or u.get('id') for u in users if u.get('user_id') is not None or u.get('id') is not None}
-        for sale in sales:
+    def _validate_referential_integrity(
+        self,
+        sales: List[Dict],
+        products: List[Dict],
+        users: List[Dict]
+    ) -> Tuple[List[str], List[Dict[str, Any]]]:
+        self.logger.info("[DQ] referential: verificando integridad referencial sales -> (products, users)")
+        errors: List[str] = []
+        details: List[Dict[str, Any]] = []
+
+        valid_product_ids = {
+            p.get('product_id') or p.get('id') for p in products
+            if p.get('product_id') is not None or p.get('id') is not None
+        }
+        valid_user_ids = {
+            u.get('user_id') or u.get('id') for u in users
+            if u.get('user_id') is not None or u.get('id') is not None
+        }
+
+        for idx, sale in enumerate(sales):
             pid = sale.get('product_id')
             uid = sale.get('user_id')
+
             if pid is not None and pid not in valid_product_ids:
-                errors.append(f"Producto {pid} no existe")
+                msg = f"Producto {pid} no existe"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'sales',
+                    'record_index': idx,
+                    'cart_id': sale.get('cart_id'),
+                    'product_id': pid,
+                    'issue': 'foreign_key_product',
+                    'message': msg
+                })
+
             if uid is not None and uid not in valid_user_ids:
-                errors.append(f"Usuario {uid} no existe")
-        return errors
+                msg = f"Usuario {uid} no existe"
+                errors.append(msg)
+                details.append({
+                    'dataset': 'sales',
+                    'record_index': idx,
+                    'cart_id': sale.get('cart_id'),
+                    'product_id': sale.get('product_id'),
+                    'user_id': uid,
+                    'issue': 'foreign_key_user',
+                    'message': msg
+                })
+
+        self.logger.info(f"[DQ] referential: inconsistencias encontradas = {len(errors)}")
+        return errors, details
 
     def validate_full_dataset(self, transformed_data: Dict[str, List[Dict]]) -> Dict[str, Any]:
-        errors = []
+        self.logger.info(
+            "[DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)"
+        )
+        errors: List[str] = []
+        details: List[Dict[str, Any]] = []
         records = 0
-        for k, v in transformed_data.items():
-            res = self.validate_data(k, v)
+
+        for dataset, values in transformed_data.items():
+            res = self.validate_data(dataset, values)
             errors.extend(res['errors'])
+            details.extend(res.get('details', []))
             records += res['records_checked']
-        # referential integrity
-        if 'sales' in transformed_data and 'products' in transformed_data and 'users' in transformed_data:
-            errors.extend(self._validate_referential_integrity(
-                transformed_data['sales'], transformed_data['products'], transformed_data['users']
-            ))
-        return {
+
+        if {'sales', 'products', 'users'}.issubset(transformed_data.keys()):
+            self.logger.info("[DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones")
+            ref_errors, ref_details = self._validate_referential_integrity(
+                transformed_data['sales'],
+                transformed_data['products'],
+                transformed_data['users']
+            )
+            errors.extend(ref_errors)
+            details.extend(ref_details)
+
+        result = {
             'is_valid': len(errors) == 0,
             'errors': errors,
             'records_checked': records,
-            'errors_found': len(errors)
+            'errors_found': len(errors),
+            'error_details': details
         }
+        self.logger.info(f"[DQ] Finalizado. Registros chequeados: {records}. Errores: {len(errors)}")
+        return result
 
     def generate_dq_report(self, validation_results: Dict[str, Any]) -> str:
-        # simple textual report
         lines = [
             f"Data Quality Report - Valid: {validation_results.get('is_valid')}",
             f"Records checked: {validation_results.get('records_checked')}",
             f"Errors found: {validation_results.get('errors_found', len(validation_results.get('errors', [])))}"
         ]
-        for e in validation_results.get('errors', []):
-            lines.append(f"- {e}")
+        for err in validation_results.get('errors', []):
+            lines.append(f"- {err}")
         return "\n".join(lines)

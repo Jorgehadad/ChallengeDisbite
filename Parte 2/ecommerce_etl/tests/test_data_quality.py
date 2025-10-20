@@ -20,6 +20,9 @@ def test_validate_products(test_config):
     assert len(validation['errors']) == 2
     assert any('price < 0' in error for error in validation['errors'])
     assert any('rating_rate > 5' in error for error in validation['errors'])
+    # Details should include record_id and field info
+    assert any(det.get('record_id') == 2 and det.get('field') == 'price' for det in validation['details'])
+    assert any(det.get('record_id') == 2 and det.get('field') == 'rating_rate' for det in validation['details'])
 
 def test_validate_referential_integrity(test_config):
     checker = DataQualityChecker(test_config)
@@ -27,9 +30,10 @@ def test_validate_referential_integrity(test_config):
     products = [{'product_id': 1}]
     users = [{'user_id': 1}]
     
-    errors = checker._validate_referential_integrity(sales, products, users)
+    errors, details = checker._validate_referential_integrity(sales, products, users)
     assert len(errors) == 1
     assert 'Producto 999 no existe' in errors[0]
+    assert any(det.get('issue') == 'foreign_key_product' for det in details)
 
 
 def test_validate_products_duplicates_and_ranges(test_config):
@@ -45,6 +49,7 @@ def test_validate_products_duplicates_and_ranges(test_config):
     assert any('price < 0' in e for e in validation['errors'])
     assert any('rating_rate' in e for e in validation['errors'])
     assert any('Duplicado' in e for e in validation['errors'])
+    assert any(det.get('issue') == 'duplicate' for det in validation['details'])
 
 
 def test_validate_full_dataset_combined(test_config):
@@ -68,6 +73,7 @@ def test_validate_full_dataset_combined(test_config):
     assert any('email' in e or 'faltante' in e for e in res['errors'])
     assert any('no existe' in e for e in res['errors'])
     assert any('Duplicado' in e for e in res['errors'])
+    assert res['error_details']
 
 def test_validate_empty_data(test_config):
     checker = DataQualityChecker(test_config)

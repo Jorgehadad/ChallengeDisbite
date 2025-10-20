@@ -13,6 +13,7 @@ class DataTransformer:
     
     def transform_products(self, products):
         """Normaliza y aplana productos."""
+        self.logger.info("[TRANSFORM] products: normalizando categorias y aplanando rating")
         transformed = []
         for p in products:
             prod_id = p.get('id') or p.get('product_id')
@@ -30,10 +31,12 @@ class DataTransformer:
                 'rating_rate': (p.get('rating') or {}).get('rate') if isinstance(p.get('rating'), dict) else p.get('rating_rate'),
                 'rating_count': (p.get('rating') or {}).get('count') if isinstance(p.get('rating'), dict) else p.get('rating_count')
             })
+        self.logger.info(f"[TRANSFORM] products: {len(transformed)} registros transformados (categorias normalizadas, rating aplanado)")
         return transformed
 
     def transform_users(self, users_data: List[Dict]) -> Dict[str, List[Dict]]:
         """Transforma datos de usuarios separando en users y geography."""
+        self.logger.info("[TRANSFORM] users: aplanando address/geolocation y normalizando nombres/emails")
         users_transformed = []
         geography_transformed = []
         
@@ -81,6 +84,7 @@ class DataTransformer:
     
     def transform_carts(self, carts_data: List[Dict], products_data: List[Dict]) -> List[Dict]:
         """Transforma datos de carritos en hechos de ventas."""
+        self.logger.info("[TRANSFORM] carts->sales: aplanando items y calculando metricas derivadas (total_amount)")
         sales_transformed = []
         
         # Crear mapeo de productos para búsqueda rápida
@@ -129,7 +133,7 @@ class DataTransformer:
                 self.logger.error(f"Error transformando carrito {cart.get('id', 'unknown')}: {str(e)}")
                 continue
         
-        self.logger.info(f"Transformados {len(sales_transformed)} registros de ventas")
+        self.logger.info(f"[TRANSFORM] sales: {len(sales_transformed)} registros de ventas transformados (incluye total_amount)")
         return sales_transformed
     
     def _parse_date(self, date_string: str) -> datetime:

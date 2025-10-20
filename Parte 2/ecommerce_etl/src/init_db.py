@@ -24,8 +24,27 @@ def init_database(config):
     
     # Execute SQL script
     try:
+        # First, drop dependent views/materialized views if they exist to allow re-create
+        drop_deps_sql = '''
+        DO $$ BEGIN
+            IF EXISTS (SELECT 1 FROM pg_matviews WHERE matviewname = 'mv_product_performance') THEN
+                EXECUTE 'DROP MATERIALIZED VIEW IF EXISTS mv_product_performance';
+            END IF;
+            IF EXISTS (SELECT 1 FROM pg_views WHERE viewname = 'vw_product_sales') THEN
+                EXECUTE 'DROP VIEW IF EXISTS vw_product_sales';
+            END IF;
+        END $$;
+        '''
+
         with psycopg2.connect(**db_params) as conn:
             with conn.cursor() as cur:
+                # drop dependent views first (if present)
+                try:
+                    cur.execute(drop_deps_sql)
+                except Exception:
+                    # If this operation fails, continue to attempt to run the create script
+                    pass
+                # execute the main DDL script (create/drop tables)
                 cur.execute(sql_script)
         print("Database initialized successfully!")
     except Exception as e:
