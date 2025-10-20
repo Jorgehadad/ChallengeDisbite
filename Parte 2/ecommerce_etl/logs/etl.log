@@ -1035,3 +1035,259 @@ Errors found: 0
 2025-10-20 11:36:35,982 - __main__ - INFO - Pipeline ETL completado en 0:00:01.143088
 2025-10-20 11:36:35,982 - __main__ - INFO - Registros procesados: 116
 2025-10-20 11:36:35,983 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 12:50:20,838 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 12:50:20,838 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 12:50:20,839 - __main__ - INFO - Procesando datos de products
+2025-10-20 12:50:20,839 - __main__ - INFO - Cargando products desde caché
+2025-10-20 12:50:21,323 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 12:50:21,325 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 12:50:21,341 - __main__ - INFO - Muestra raw->products (primer registro):
+ id                                                 title  price                                                                                                                         description       category                                                     image                      rating
+  1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday men's clothing https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png {'rate': 3.9, 'count': 120}
+2025-10-20 12:50:21,341 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 12:50:21,342 - __main__ - INFO - Procesando datos de carts
+2025-10-20 12:50:21,342 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 12:50:21,736 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 12:50:21,737 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 12:50:21,739 - __main__ - INFO - Muestra raw->carts (primer registro):
+ id  userId                     date                                                                                            products  __v
+  1       1 2020-03-02T00:00:00.000Z [{'productId': 1, 'quantity': 4}, {'productId': 2, 'quantity': 1}, {'productId': 3, 'quantity': 6}]    0
+2025-10-20 12:50:21,739 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 12:50:21,739 - __main__ - INFO - Procesando datos de users
+2025-10-20 12:50:21,740 - __main__ - INFO - Cargando users desde caché
+2025-10-20 12:50:22,092 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 12:50:22,094 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 12:50:22,095 - __main__ - INFO - Muestra raw->users (primer registro):
+                                                                                                                                   address  id          email username password                                     name          phone  __v
+{'geolocation': {'lat': '-37.3159', 'long': '81.1496'}, 'city': 'kilcoole', 'street': 'new road', 'number': 7682, 'zipcode': '12926-3874'}   1 john@gmail.com    johnd  m38rmF$ {'firstname': 'john', 'lastname': 'doe'} 1-570-236-7033    0
+2025-10-20 12:50:22,096 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 12:50:22,096 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 12:50:22,096 - __main__ - INFO - Transformando datos de productos
+2025-10-20 12:50:22,096 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 12:50:22,097 - src.transform - INFO - [TRANSFORM] products: 20 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 12:50:22,098 - __main__ - INFO - Muestra transform->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 12:50:22,098 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 12:50:22,098 - src.transform - INFO - [TRANSFORM] users: aplanando address/geolocation y normalizando nombres/emails
+2025-10-20 12:50:22,099 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 12:50:22,102 - __main__ - INFO - Muestra transform->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 12:50:22.099041
+2025-10-20 12:50:22,103 - __main__ - INFO - Muestra transform->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 12:50:22.099046
+2025-10-20 12:50:22,104 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 12:50:22,104 - src.transform - INFO - [TRANSFORM] carts->sales: aplanando items y calculando metricas derivadas (total_amount)
+2025-10-20 12:50:22,105 - src.transform - INFO - [TRANSFORM] sales: 14 registros de ventas transformados (incluye total_amount)
+2025-10-20 12:50:22,109 - __main__ - INFO - Muestra transform->sales (primer registro):
+ cart_id  user_id  product_id                      date  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00         4      109.95         439.8 2025-10-20 12:50:22.105135
+2025-10-20 12:50:22,109 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 12:50:22,111 - __main__ - INFO - Muestra transform->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 12:50:22,112 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 12:50:22,113 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 12:50:22,114 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 12:50:22,116 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 12:50:22,118 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 12:50:22,119 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 12:50:22,119 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 12:50:22,120 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 12:50:22,120 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 12:50:22,121 - src.data_quality - INFO - [DQ] geography: validando completitud segun campos criticos de config
+2025-10-20 12:50:22,121 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 12:50:22,122 - src.data_quality - INFO - [DQ] dates: validando completitud segun campos criticos de config
+2025-10-20 12:50:22,122 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 12:50:22,123 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 12:50:22,123 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 0
+2025-10-20 12:50:22,123 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 58. Errores: 0
+2025-10-20 12:50:22,124 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 12:50:22,124 - __main__ - INFO - Iniciando fase TESTS (pytest): validando reglas y transformaciones
+2025-10-20 12:50:22,605 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 12:50:22,659 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 12:50:22,660 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 12:50:22,664 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 12:50:22,667 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 12:50:22,668 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 12:50:22,669 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 12:50:22,670 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 12:50:22,671 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 12:50:22,672 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 12:50:22,673 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 12:50:22,674 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 6. Errores: 3
+2025-10-20 12:50:22,679 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 12:50:22,700 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 12:50:22,703 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 12:50:22,705 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 12:50:22,708 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 12:50:22,710 - src.extract - ERROR - Error API para products: None: Max retries exceeded with url: https://fakestoreapi.com/products (Caused by ResponseError('too many 503 error responses'))
+2025-10-20 12:50:22,729 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 12:50:22,736 - src.transform - INFO - [TRANSFORM] products: 1 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 12:50:22,843 - __main__ - INFO - Tests OK. Continuando con fase LOAD.
+2025-10-20 12:50:22,844 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 12:50:22,844 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 12:50:22,845 - __main__ - INFO - Muestra load->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 12:50:22,896 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 12:50:22,948 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 12:50:22,948 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 12:50:22,950 - __main__ - INFO - Muestra load->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 12:50:22,998 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 12:50:23,049 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 12:50:23,050 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 12:50:23,051 - __main__ - INFO - Muestra load->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 12:50:22.099041
+2025-10-20 12:50:23,203 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 12:50:23,253 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 12:50:23,254 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 12:50:23,255 - __main__ - INFO - Muestra load->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 12:50:22.099046
+2025-10-20 12:50:23,305 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 12:50:23,354 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 12:50:23,355 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 12:50:23,357 - __main__ - INFO - Muestra load->sales (primer registro):
+ cart_id  user_id  product_id                      date  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00         4      109.95         439.8 2025-10-20 12:50:22.105135
+2025-10-20 12:50:23,399 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 12:50:23,443 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 12:50:23,444 - __main__ - INFO - Pipeline ETL completado en 0:00:02.605690
+2025-10-20 12:50:23,444 - __main__ - INFO - Registros procesados: 116
+2025-10-20 12:50:23,444 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 13:09:03,556 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 13:09:03,557 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 13:09:03,557 - __main__ - INFO - Procesando datos de products
+2025-10-20 13:09:03,557 - __main__ - INFO - Cargando products desde caché
+2025-10-20 13:09:03,558 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 13:09:03,559 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\products.json
+2025-10-20 13:09:03,562 - __main__ - INFO - Muestra raw->products (primer registro):
+ id                                                 title  price                                                                                                                         description       category                                                     image                      rating
+  1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday men's clothing https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png {'rate': 3.9, 'count': 120}
+2025-10-20 13:09:03,562 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 13:09:03,562 - __main__ - INFO - Procesando datos de carts
+2025-10-20 13:09:03,563 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 13:09:03,563 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 13:09:03,564 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\carts.json
+2025-10-20 13:09:03,565 - __main__ - INFO - Muestra raw->carts (primer registro):
+ id  userId                     date                                                                                            products  __v
+  1       1 2020-03-02T00:00:00.000Z [{'productId': 1, 'quantity': 4}, {'productId': 2, 'quantity': 1}, {'productId': 3, 'quantity': 6}]    0
+2025-10-20 13:09:03,565 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 13:09:03,566 - __main__ - INFO - Procesando datos de users
+2025-10-20 13:09:03,566 - __main__ - INFO - Cargando users desde caché
+2025-10-20 13:09:03,567 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 13:09:03,567 - __main__ - INFO - Raw data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\raw\users.json
+2025-10-20 13:09:03,569 - __main__ - INFO - Muestra raw->users (primer registro):
+                                                                                                                                   address  id          email username password                                     name          phone  __v
+{'geolocation': {'lat': '-37.3159', 'long': '81.1496'}, 'city': 'kilcoole', 'street': 'new road', 'number': 7682, 'zipcode': '12926-3874'}   1 john@gmail.com    johnd  m38rmF$ {'firstname': 'john', 'lastname': 'doe'} 1-570-236-7033    0
+2025-10-20 13:09:03,570 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 13:09:03,570 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 13:09:03,570 - __main__ - INFO - Transformando datos de productos
+2025-10-20 13:09:03,570 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 13:09:03,570 - src.transform - INFO - [TRANSFORM] products: 20 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 13:09:03,572 - __main__ - INFO - Muestra transform->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 13:09:03,572 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 13:09:03,572 - src.transform - INFO - [TRANSFORM] users: aplanando address/geolocation y normalizando nombres/emails
+2025-10-20 13:09:03,572 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 13:09:03,575 - __main__ - INFO - Muestra transform->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 13:09:03.572729
+2025-10-20 13:09:03,577 - __main__ - INFO - Muestra transform->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 13:09:03.572735
+2025-10-20 13:09:03,577 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 13:09:03,577 - src.transform - INFO - [TRANSFORM] carts->sales: aplanando items y calculando metricas derivadas (total_amount)
+2025-10-20 13:09:03,577 - src.transform - INFO - [TRANSFORM] sales: 14 registros de ventas transformados (incluye total_amount)
+2025-10-20 13:09:03,579 - __main__ - INFO - Muestra transform->sales (primer registro):
+ cart_id  user_id  product_id                      date  date_key  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00  20200302         4      109.95         439.8 2025-10-20 13:09:03.577620
+2025-10-20 13:09:03,579 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 13:09:03,580 - __main__ - INFO - Muestra transform->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 13:09:03,581 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\products.json
+2025-10-20 13:09:03,582 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\users.json
+2025-10-20 13:09:03,583 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\geography.json
+2025-10-20 13:09:03,583 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\sales.json
+2025-10-20 13:09:03,584 - __main__ - INFO - Processed data guardada en c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\ecommerce_etl\data\processed\dates.json
+2025-10-20 13:09:03,584 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 13:09:03,584 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 13:09:03,584 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 13:09:03,584 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 13:09:03,584 - src.data_quality - INFO - [DQ] geography: validando completitud segun campos criticos de config
+2025-10-20 13:09:03,584 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 13:09:03,584 - src.data_quality - INFO - [DQ] dates: validando completitud segun campos criticos de config
+2025-10-20 13:09:03,585 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 13:09:03,585 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 13:09:03,585 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 0
+2025-10-20 13:09:03,585 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 58. Errores: 0
+2025-10-20 13:09:03,585 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 13:09:03,585 - __main__ - INFO - Iniciando fase TESTS (pytest): validando reglas y transformaciones
+2025-10-20 13:09:03,680 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 13:09:03,686 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 13:09:03,687 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 13:09:03,690 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 13:09:03,692 - src.data_quality - INFO - [DQ] Iniciando validaciones de calidad de datos (completitud, rangos, duplicados, integridad referencial)
+2025-10-20 13:09:03,693 - src.data_quality - INFO - [DQ] users: validando completitud (user_id, email) y unicidad de user_id
+2025-10-20 13:09:03,694 - src.data_quality - INFO - [DQ] products: validando completitud, rangos (price>0, rating_rate en 0-5) y duplicados por product_id
+2025-10-20 13:09:03,695 - src.data_quality - INFO - [DQ] sales: validando completitud (quantity, price/total), rangos (quantity>0) y duplicados cart_id/product_id
+2025-10-20 13:09:03,696 - src.data_quality - INFO - [DQ] Ejecutando validacion de integridad referencial entre sales y dimensiones
+2025-10-20 13:09:03,697 - src.data_quality - INFO - [DQ] referential: verificando integridad referencial sales -> (products, users)
+2025-10-20 13:09:03,698 - src.data_quality - INFO - [DQ] referential: inconsistencias encontradas = 1
+2025-10-20 13:09:03,698 - src.data_quality - INFO - [DQ] Finalizado. Registros chequeados: 6. Errores: 3
+2025-10-20 13:09:03,703 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 13:09:03,706 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 13:09:03,708 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 13:09:03,709 - src.extract - INFO - Extraídos 1 registros de products
+2025-10-20 13:09:03,711 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-20 13:09:03,713 - src.extract - ERROR - Error API para products: None: Max retries exceeded with url: https://fakestoreapi.com/products (Caused by ResponseError('too many 503 error responses'))
+2025-10-20 13:09:03,717 - src.transform - INFO - [TRANSFORM] products: normalizando categorias y aplanando rating
+2025-10-20 13:09:03,718 - src.transform - INFO - [TRANSFORM] products: 1 registros transformados (categorias normalizadas, rating aplanado)
+2025-10-20 13:09:03,792 - __main__ - INFO - Tests OK. Continuando con fase LOAD.
+2025-10-20 13:09:03,792 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 13:09:03,793 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 13:09:03,794 - __main__ - INFO - Muestra load->dates (primer registro):
+ date_key       date  day  month  year  quarter  iso_week  day_of_week  day_name month_name
+ 20200101 2020-01-01    1      1  2020        1         1            2 Wednesday    January
+2025-10-20 13:09:03,834 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 13:09:03,866 - src.load - INFO - Inserted batch of 4 into dim_date. Ignored (conflicts): 0
+2025-10-20 13:09:03,866 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 13:09:03,869 - __main__ - INFO - Muestra load->products (primer registro):
+ product_id                                                 title       category  price                                                                                                                         description                                                 image_url  rating_rate  rating_count
+          1 Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops men's clothing 109.95 Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png          3.9           120
+2025-10-20 13:09:03,913 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 13:09:03,959 - src.load - INFO - Inserted batch of 20 into dim_products. Ignored (conflicts): 0
+2025-10-20 13:09:03,960 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 13:09:03,962 - __main__ - INFO - Muestra load->users (primer registro):
+ user_id name_first name_last          email username          phone                 created_at
+       1       John       Doe john@gmail.com    johnd 1-570-236-7033 2025-10-20 13:09:03.572729
+2025-10-20 13:09:04,026 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 13:09:04,124 - src.load - INFO - Inserted batch of 10 into dim_users. Ignored (conflicts): 0
+2025-10-20 13:09:04,125 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 13:09:04,132 - __main__ - INFO - Muestra load->geography (primer registro):
+ user_id     city   street    zipcode      lat     lng                 created_at
+       1 Kilcoole new road 12926-3874 -37.3159 81.1496 2025-10-20 13:09:03.572735
+2025-10-20 13:09:04,213 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 13:09:04,254 - src.load - INFO - Inserted batch of 10 into dim_geography. Ignored (conflicts): 0
+2025-10-20 13:09:04,255 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 13:09:04,256 - __main__ - INFO - Muestra load->sales (primer registro):
+ cart_id  user_id  product_id                      date  date_key  quantity  unit_price  total_amount                  loaded_at
+       1        1           1 2020-03-02 00:00:00+00:00  20200302         4      109.95         439.8 2025-10-20 13:09:03.577620
+2025-10-20 13:09:04,301 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 13:09:04,336 - src.load - INFO - Inserted batch of 14 into fact_sales. Ignored (conflicts): 0
+2025-10-20 13:09:04,336 - __main__ - INFO - Pipeline ETL completado en 0:00:00.779897
+2025-10-20 13:09:04,336 - __main__ - INFO - Registros procesados: 116
+2025-10-20 13:09:04,336 - __main__ - INFO - Errores encontrados: 0

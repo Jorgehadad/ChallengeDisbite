@@ -116,6 +116,7 @@ class DataTransformer:
                         'user_id': user_id,
                         'product_id': product_id,
                         'date': cart_date,
+                        'date_key': int(cart_date.strftime('%Y%m%d')) if cart_date else None,
                         'quantity': quantity,
                         'unit_price': unit_price,
                         'total_amount': total_amount,
