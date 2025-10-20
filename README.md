@@ -31,7 +31,7 @@ Proyecto de práctica de ingeniería de datos basado en la API pública FakeStor
 
 **Requisitos**
 
-- Python 3.12+ (recomendado)
+- Python 3.13
 - PostgreSQL 14+ en `localhost` (o ajustar conexión)
 - Acceso a red para consultar `https://fakestoreapi.com`
 
@@ -104,9 +104,4 @@ Las pruebas no requieren base de datos real (se usan fixtures/mocks donde aplica
 - Conexión a PostgreSQL:
   - Verifica host/puerto/usuario/clave en `config.yaml`.
   - Asegúrate de que el servicio PostgreSQL está activo y accesible.
-
-
-**Licencia**
-
-Proyecto académico para el Challenge Disbite 2025. Úsalo libremente con fines educativos.
 

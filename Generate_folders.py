@@ -1,7 +1,7 @@
 import os
 
 # Ruta base del proyecto
-BASE_PATH = r"C:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\Desarrollo\Parte 2"
+BASE_PATH = r".\Challenge Disbite 2025\Desarrollo\Parte 2"
 
 # Estructura de carpetas del proyecto
 STRUCTURE = {
