@@ -5,6 +5,7 @@ import logging
 import yaml
 import os
 from typing import Dict, Any
+from datetime import datetime, timedelta
 
 def setup_logging():
     """Configura el sistema de logging."""
@@ -44,6 +45,16 @@ def handle_exception(exc_type, exc_value, exc_traceback):
         "Excepción no capturada:",
         exc_info=(exc_type, exc_value, exc_traceback)
     )
+
+def is_cache_valid(cache_path, max_age_hours=24):
+    """Check if cache file is valid based on age."""
+    if not os.path.exists(cache_path):
+        return False
+        
+    file_time = datetime.fromtimestamp(os.path.getmtime(cache_path))
+    age = datetime.now() - file_time
+    
+    return age < timedelta(hours=max_age_hours)
 
 # Configurar manejador global de excepciones
 import sys

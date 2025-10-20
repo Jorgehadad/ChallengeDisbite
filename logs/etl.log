@@ -1,0 +1,1129 @@
+2025-10-19 23:08:31,641 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:08:31,641 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:08:31,642 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:08:31,642 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:08:31,642 - __main__ - ERROR - Error extrayendo products: name 'os' is not defined
+2025-10-19 23:08:31,642 - __main__ - ERROR - Error en pipeline ETL: name 'os' is not defined
+2025-10-19 23:08:31,642 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 174, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 49, in run
+    raw_data = self._extract_phase()
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 78, in _extract_phase
+    data = self.extractor.fetch_endpoint(endpoint_name, endpoint_path)
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\extract.py", line 43, in fetch_endpoint
+    timeout=int(os.getenv('API_TIMEOUT', 30))
+                ^^
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+2025-10-19 23:09:58,092 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:09:58,092 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:09:58,093 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:09:58,093 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:10:27,599 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:10:27,600 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:10:27,601 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:10:27,602 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:10:28,008 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:10:28,009 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:10:28,009 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:10:28,010 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:10:28,408 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:10:28,409 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:10:28,410 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:10:28,410 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:10:28,411 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:10:28,412 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:10:28,413 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:10:28,414 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:10:28,415 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:10:28,415 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:10:28,416 - src.transform - INFO - Generada dimensión de tiempo con 4 fechas
+2025-10-19 23:10:28,417 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:10:28,418 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:10:28,418 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:10:28,419 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:10:28,419 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:10:28,420 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:10:28,421 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:10:28,421 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:10:28,422 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:10:28,423 - src.load - ERROR - Error de conexión: invalid dsn: invalid connection option "schema"
+
+2025-10-19 23:10:28,424 - src.load - ERROR - Error cargando lote 1: invalid dsn: invalid connection option "schema"
+
+2025-10-19 23:10:28,424 - __main__ - ERROR - Error cargando dates: invalid dsn: invalid connection option "schema"
+
+2025-10-19 23:10:28,424 - __main__ - ERROR - Error en pipeline ETL: invalid dsn: invalid connection option "schema"
+
+2025-10-19 23:10:28,425 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 174, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 153, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 69, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 91, in _insert_batch
+    with self._get_connection() as conn:
+         ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 33, in _get_connection
+    conn = psycopg2.connect(**self.db_config)
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\__init__.py", line 134, in connect
+    dsn = _ext.make_dsn(dsn, **kwargs)
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extensions.py", line 167, in make_dsn
+    parse_dsn(dsn)
+    ~~~~~~~~~^^^^^
+psycopg2.ProgrammingError: invalid dsn: invalid connection option "schema"
+
+2025-10-19 23:13:40,805 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:13:40,806 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:13:40,806 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:13:40,806 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:13:41,855 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:13:41,856 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:13:41,857 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:13:41,858 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:13:42,243 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:13:42,244 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:13:42,245 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:13:42,247 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:13:42,627 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:13:42,628 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:13:42,629 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:13:42,629 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:13:42,631 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:13:42,632 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:13:42,632 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:13:42,633 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:13:42,633 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:13:42,634 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:13:42,634 - src.transform - INFO - Generada dimensión de tiempo con 4 fechas
+2025-10-19 23:13:42,635 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:13:42,635 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:13:42,635 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:13:42,636 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:13:42,636 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:13:42,637 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:13:42,637 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:13:42,637 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:13:42,638 - __main__ - ERROR - Error cargando dates: 'DataLoader' object has no attribute 'config'
+2025-10-19 23:13:42,638 - __main__ - ERROR - Error en pipeline ETL: 'DataLoader' object has no attribute 'config'
+2025-10-19 23:13:42,638 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 174, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 153, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 41, in load_data
+    batch_size = self.config['etl']['batch_size']
+                 ^^^^^^^^^^^
+AttributeError: 'DataLoader' object has no attribute 'config'
+2025-10-19 23:14:40,282 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:14:40,283 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:14:40,283 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:14:40,283 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:14:40,733 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:14:40,735 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:14:40,736 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:14:40,737 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:14:41,120 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:14:41,122 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:14:41,124 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:14:41,125 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:14:41,506 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:14:41,506 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:14:41,507 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:14:41,508 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:14:41,509 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:14:41,509 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:14:41,510 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:14:41,510 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:14:41,511 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:14:41,511 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:14:41,511 - src.transform - INFO - Generada dimensión de tiempo con 4 fechas
+2025-10-19 23:14:41,512 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:14:41,512 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:14:41,513 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:14:41,513 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:14:41,514 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:14:41,514 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:14:41,514 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:14:41,515 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:14:41,516 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:14:41,593 - src.load - ERROR - Error de conexión: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:14:41,594 - src.load - ERROR - Error cargando lote 1: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:14:41,595 - __main__ - ERROR - Error cargando dates: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:14:41,596 - __main__ - ERROR - Error en pipeline ETL: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:14:41,596 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 174, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 153, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 99, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:17:30,339 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:17:30,340 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:17:30,340 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:17:30,340 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:17:31,192 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:17:31,192 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:17:31,192 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:17:31,192 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:17:31,568 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:17:31,569 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:17:31,569 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:17:31,569 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:17:31,943 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:17:31,943 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:17:31,944 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:17:31,944 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:17:31,944 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:17:31,944 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:17:31,945 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:17:31,945 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:17:31,945 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:17:31,945 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:17:31,946 - src.transform - INFO - Generada dimensión de tiempo con 4 fechas
+2025-10-19 23:17:31,946 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:17:31,946 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:17:31,946 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:17:31,946 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:17:31,946 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:17:31,947 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:17:31,947 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:17:31,947 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:17:31,947 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:17:31,987 - src.load - ERROR - Error de conexión: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:17:31,987 - src.load - ERROR - Error cargando lote 1: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:17:31,988 - __main__ - ERROR - Error cargando dates: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:17:31,988 - __main__ - ERROR - Error en pipeline ETL: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:17:31,988 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 174, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 153, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 99, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: no existe la relación «dim_date»
+LINE 2:             INSERT INTO dim_date (date_key, date, day, month...
+                                ^
+
+2025-10-19 23:19:16,616 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:19:16,616 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:19:16,617 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:19:16,617 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:19:24,278 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:19:24,279 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:19:24,279 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:19:24,280 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:19:24,685 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:19:24,687 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:19:24,688 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:19:24,690 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:19:25,094 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:19:25,096 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:19:25,097 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:19:25,098 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:19:25,100 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:19:25,101 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:19:25,102 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:19:25,103 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:19:25,104 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:19:25,105 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:19:25,106 - src.transform - INFO - Generada dimensión de tiempo con 4 fechas
+2025-10-19 23:19:25,107 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:19:25,108 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:19:25,109 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:19:25,110 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:19:25,111 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:19:25,111 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:19:25,112 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:19:25,113 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:19:25,113 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:19:25,174 - src.load - ERROR - Error de conexión: no existe la columna «iso_week» en la relación «dim_date»
+LINE 2: ..._date (date_key, date, day, month, year, quarter, iso_week, ...
+                                                             ^
+
+2025-10-19 23:19:25,175 - src.load - ERROR - Error cargando lote 1: no existe la columna «iso_week» en la relación «dim_date»
+LINE 2: ..._date (date_key, date, day, month, year, quarter, iso_week, ...
+                                                             ^
+
+2025-10-19 23:19:25,176 - __main__ - ERROR - Error cargando dates: no existe la columna «iso_week» en la relación «dim_date»
+LINE 2: ..._date (date_key, date, day, month, year, quarter, iso_week, ...
+                                                             ^
+
+2025-10-19 23:19:25,176 - __main__ - ERROR - Error en pipeline ETL: no existe la columna «iso_week» en la relación «dim_date»
+LINE 2: ..._date (date_key, date, day, month, year, quarter, iso_week, ...
+                                                             ^
+
+2025-10-19 23:19:25,177 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 174, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 153, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 99, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: no existe la columna «iso_week» en la relación «dim_date»
+LINE 2: ..._date (date_key, date, day, month, year, quarter, iso_week, ...
+                                                             ^
+
+2025-10-19 23:20:29,992 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:20:29,993 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:20:29,993 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:20:29,993 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:20:30,427 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:20:30,429 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:20:30,430 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:20:30,431 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:20:30,807 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:20:30,808 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:20:30,809 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:20:30,810 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:20:31,188 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:20:31,189 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:20:31,190 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:20:31,191 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:20:31,192 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:20:31,193 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:20:31,194 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:20:31,196 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:20:31,196 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:20:31,197 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:20:31,198 - src.transform - INFO - Generada dimensión de tiempo con 4 fechas
+2025-10-19 23:20:31,198 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:20:31,199 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:20:31,199 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:20:31,199 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:20:31,200 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:20:31,200 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:20:31,201 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:20:31,201 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:20:31,202 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:20:31,266 - src.load - ERROR - Error de conexión: no existe la columna «day_of_week» en la relación «dim_date»
+LINE 2: ...e_key, date, day, month, year, quarter, iso_week, day_of_wee...
+                                                             ^
+
+2025-10-19 23:20:31,266 - src.load - ERROR - Error cargando lote 1: no existe la columna «day_of_week» en la relación «dim_date»
+LINE 2: ...e_key, date, day, month, year, quarter, iso_week, day_of_wee...
+                                                             ^
+
+2025-10-19 23:20:31,267 - __main__ - ERROR - Error cargando dates: no existe la columna «day_of_week» en la relación «dim_date»
+LINE 2: ...e_key, date, day, month, year, quarter, iso_week, day_of_wee...
+                                                             ^
+
+2025-10-19 23:20:31,267 - __main__ - ERROR - Error en pipeline ETL: no existe la columna «day_of_week» en la relación «dim_date»
+LINE 2: ...e_key, date, day, month, year, quarter, iso_week, day_of_wee...
+                                                             ^
+
+2025-10-19 23:20:31,267 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 174, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 153, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 99, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: no existe la columna «day_of_week» en la relación «dim_date»
+LINE 2: ...e_key, date, day, month, year, quarter, iso_week, day_of_wee...
+                                                             ^
+
+2025-10-19 23:21:34,026 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:21:34,026 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:21:34,027 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:21:34,027 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:21:35,469 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:21:35,469 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:21:35,470 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:21:35,470 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:21:35,850 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:21:35,852 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:21:35,852 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:21:35,852 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:21:36,233 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:21:36,233 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:21:36,234 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:21:36,234 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:21:36,234 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:21:36,234 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:21:36,235 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:21:36,235 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:21:36,235 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:21:36,236 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:21:36,236 - src.transform - INFO - Generada dimensión de tiempo con 4 fechas
+2025-10-19 23:21:36,236 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:21:36,236 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:21:36,237 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:21:36,237 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:21:36,237 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:21:36,237 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:21:36,238 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:21:36,238 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:21:36,238 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:21:36,273 - src.load - ERROR - Error de conexión: no existe la columna «is_weekend» en la relación «dim_date»
+LINE 2: ...ter, iso_week, day_of_week, day_name, month_name, is_weekend...
+                                                             ^
+
+2025-10-19 23:21:36,274 - src.load - ERROR - Error cargando lote 1: no existe la columna «is_weekend» en la relación «dim_date»
+LINE 2: ...ter, iso_week, day_of_week, day_name, month_name, is_weekend...
+                                                             ^
+
+2025-10-19 23:21:36,274 - __main__ - ERROR - Error cargando dates: no existe la columna «is_weekend» en la relación «dim_date»
+LINE 2: ...ter, iso_week, day_of_week, day_name, month_name, is_weekend...
+                                                             ^
+
+2025-10-19 23:21:36,274 - __main__ - ERROR - Error en pipeline ETL: no existe la columna «is_weekend» en la relación «dim_date»
+LINE 2: ...ter, iso_week, day_of_week, day_name, month_name, is_weekend...
+                                                             ^
+
+2025-10-19 23:21:36,275 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 174, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 153, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 99, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: no existe la columna «is_weekend» en la relación «dim_date»
+LINE 2: ...ter, iso_week, day_of_week, day_name, month_name, is_weekend...
+                                                             ^
+
+2025-10-19 23:24:29,612 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:24:29,613 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:24:29,613 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:24:29,614 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:24:30,704 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:24:30,705 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:24:30,706 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:24:30,707 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:24:31,100 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:24:31,102 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:24:31,103 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:24:31,104 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:24:31,501 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:24:31,502 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:24:31,503 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:24:31,504 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:24:31,505 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:24:31,507 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:24:31,508 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:24:31,509 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:24:31,511 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:24:31,512 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:24:31,514 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:24:31,515 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:24:31,517 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:24:31,518 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:24:31,519 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:24:31,520 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:24:31,522 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:24:31,523 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:24:31,524 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:24:31,626 - __main__ - INFO - Cargando 20 registros de products
+2025-10-19 23:24:31,627 - src.load - INFO - Cargando 20 registros en dim_product
+2025-10-19 23:24:31,682 - src.load - ERROR - Error de conexión: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:24:31,683 - src.load - ERROR - Error cargando lote 1: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:24:31,683 - __main__ - ERROR - Error cargando products: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:24:31,683 - __main__ - ERROR - Error en pipeline ETL: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:24:31,684 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 181, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 160, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 102, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:24:58,215 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:24:58,216 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:24:58,216 - __main__ - INFO - Extrayendo datos de products
+2025-10-19 23:24:58,216 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:25:20,694 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:25:20,695 - __main__ - INFO - Extraídos 20 registros de products
+2025-10-19 23:25:20,695 - __main__ - INFO - Extrayendo datos de carts
+2025-10-19 23:25:20,696 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:25:21,082 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:25:21,084 - __main__ - INFO - Extraídos 7 registros de carts
+2025-10-19 23:25:21,085 - __main__ - INFO - Extrayendo datos de users
+2025-10-19 23:25:21,087 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:25:21,478 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:25:21,479 - __main__ - INFO - Extraídos 10 registros de users
+2025-10-19 23:25:21,481 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:25:21,482 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:25:21,484 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:25:21,484 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:25:21,485 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:25:21,486 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:25:21,487 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:25:21,487 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:25:21,488 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:25:21,489 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:25:21,490 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:25:21,491 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:25:21,492 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:25:21,493 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:25:21,493 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:25:21,493 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:25:21,493 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:25:21,555 - __main__ - INFO - Cargando 20 registros de products
+2025-10-19 23:25:21,555 - src.load - INFO - Cargando 20 registros en dim_product
+2025-10-19 23:25:21,590 - src.load - ERROR - Error de conexión: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:25:21,591 - src.load - ERROR - Error cargando lote 1: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:25:21,591 - __main__ - ERROR - Error cargando products: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:25:21,591 - __main__ - ERROR - Error en pipeline ETL: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:25:21,591 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 181, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 58, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 160, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 102, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:27:57,015 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:27:57,015 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:27:57,016 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:27:57,016 - __main__ - INFO - Extrayendo datos de products desde API
+2025-10-19 23:27:57,017 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/products
+2025-10-19 23:28:00,082 - src.extract - INFO - Extraídos 20 registros de products
+2025-10-19 23:28:00,083 - __main__ - INFO - Guardando products en caché
+2025-10-19 23:28:00,085 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:28:00,085 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:28:00,085 - __main__ - INFO - Extrayendo datos de carts desde API
+2025-10-19 23:28:00,085 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/carts
+2025-10-19 23:28:00,475 - src.extract - INFO - Extraídos 7 registros de carts
+2025-10-19 23:28:00,476 - __main__ - INFO - Guardando carts en caché
+2025-10-19 23:28:00,479 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:28:00,479 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:28:00,481 - __main__ - INFO - Extrayendo datos de users desde API
+2025-10-19 23:28:00,482 - src.extract - INFO - Extrayendo datos de: https://fakestoreapi.com/users
+2025-10-19 23:28:00,869 - src.extract - INFO - Extraídos 10 registros de users
+2025-10-19 23:28:00,870 - __main__ - INFO - Guardando users en caché
+2025-10-19 23:28:00,874 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:28:00,875 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:28:00,876 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:28:00,878 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:28:00,879 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:28:00,880 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:28:00,881 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:28:00,883 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:28:00,883 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:28:00,884 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:28:00,884 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:28:00,885 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:28:00,885 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:28:00,886 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:28:00,886 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:28:00,886 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:28:00,886 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:28:00,887 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:28:00,964 - src.load - ERROR - Error de conexión: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:28:00,965 - src.load - ERROR - Error cargando lote 1: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:28:00,965 - __main__ - ERROR - Error cargando dates: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:28:00,965 - __main__ - ERROR - Error en pipeline ETL: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:28:00,966 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 219, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 83, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 198, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 102, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:28:16,334 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:28:16,335 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:28:16,335 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:28:16,335 - __main__ - INFO - Cargando products desde caché
+2025-10-19 23:28:16,335 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-19 23:28:16,335 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:28:16,335 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:28:16,335 - __main__ - INFO - Cargando carts desde caché
+2025-10-19 23:28:16,336 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-19 23:28:16,336 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:28:16,336 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:28:16,336 - __main__ - INFO - Cargando users desde caché
+2025-10-19 23:28:16,336 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-19 23:28:16,337 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:28:16,337 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:28:16,337 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:28:16,337 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:28:16,337 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:28:16,337 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:28:16,337 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:28:16,337 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:28:16,337 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:28:16,337 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:28:16,338 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:28:16,338 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:28:16,338 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:28:16,338 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:28:16,338 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:28:16,338 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:28:16,338 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:28:16,338 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:28:16,490 - __main__ - INFO - Cargando 20 registros de products
+2025-10-19 23:28:16,490 - src.load - INFO - Cargando 20 registros en dim_product
+2025-10-19 23:28:16,527 - src.load - ERROR - Error de conexión: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:28:16,528 - src.load - ERROR - Error cargando lote 1: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:28:16,528 - __main__ - ERROR - Error cargando products: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:28:16,528 - __main__ - ERROR - Error en pipeline ETL: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:28:16,528 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 219, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 83, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 198, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 72, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 102, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: no existe la relación «dim_product»
+LINE 2:                 INSERT INTO dim_product (product_id,title,ca...
+                                    ^
+
+2025-10-19 23:30:27,800 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:30:27,801 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:30:27,801 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:30:27,801 - __main__ - INFO - Cargando products desde caché
+2025-10-19 23:30:27,802 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-19 23:30:27,802 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:30:27,802 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:30:27,802 - __main__ - INFO - Cargando carts desde caché
+2025-10-19 23:30:27,803 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-19 23:30:27,803 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:30:27,803 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:30:27,803 - __main__ - INFO - Cargando users desde caché
+2025-10-19 23:30:27,803 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-19 23:30:27,804 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:30:27,804 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:30:27,804 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:30:27,804 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:30:27,804 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:30:27,804 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:30:27,805 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:30:27,805 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:30:27,805 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:30:27,805 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:30:27,805 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:30:27,805 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:30:27,805 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:30:27,805 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:30:27,805 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:30:27,805 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:30:27,805 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:30:27,805 - __main__ - ERROR - Error cargando dates: 'DataLoader' object has no attribute 'config'
+2025-10-19 23:30:27,805 - __main__ - ERROR - Error en pipeline ETL: 'DataLoader' object has no attribute 'config'
+2025-10-19 23:30:27,806 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 219, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 83, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 198, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 50, in load_data
+    batch_size = self.config['etl']['batch_size']
+                 ^^^^^^^^^^^
+AttributeError: 'DataLoader' object has no attribute 'config'
+2025-10-19 23:31:19,974 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:31:19,975 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:31:19,975 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:31:19,975 - __main__ - INFO - Cargando products desde caché
+2025-10-19 23:31:19,976 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-19 23:31:19,976 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:31:19,977 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:31:19,977 - __main__ - INFO - Cargando carts desde caché
+2025-10-19 23:31:19,978 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-19 23:31:19,978 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:31:19,978 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:31:19,978 - __main__ - INFO - Cargando users desde caché
+2025-10-19 23:31:19,979 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-19 23:31:19,979 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:31:19,979 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:31:19,979 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:31:19,979 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:31:19,979 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:31:19,980 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:31:19,980 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:31:19,980 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:31:19,980 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:31:19,981 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:31:19,981 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:31:19,981 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:31:19,981 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:31:19,981 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:31:19,981 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:31:19,981 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:31:19,981 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:31:19,981 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:31:20,062 - __main__ - INFO - Cargando 20 registros de products
+2025-10-19 23:31:20,063 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-19 23:31:20,122 - src.load - ERROR - Error de conexión: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:20,123 - src.load - ERROR - Error cargando lote: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:20,123 - __main__ - ERROR - Error cargando products: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:20,123 - __main__ - ERROR - Error en pipeline ETL: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:20,124 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 219, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 83, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 198, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 67, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 95, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:37,182 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:31:37,183 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:31:37,183 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:31:37,183 - __main__ - INFO - Cargando products desde caché
+2025-10-19 23:31:37,184 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-19 23:31:37,184 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:31:37,184 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:31:37,185 - __main__ - INFO - Cargando carts desde caché
+2025-10-19 23:31:37,185 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-19 23:31:37,185 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:31:37,185 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:31:37,186 - __main__ - INFO - Cargando users desde caché
+2025-10-19 23:31:37,186 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-19 23:31:37,186 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:31:37,186 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:31:37,186 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:31:37,186 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:31:37,187 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:31:37,187 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:31:37,187 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:31:37,187 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:31:37,187 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:31:37,187 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:31:37,187 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:31:37,188 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:31:37,188 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:31:37,188 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:31:37,188 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:31:37,188 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:31:37,188 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:31:37,188 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:31:37,235 - __main__ - INFO - Cargando 20 registros de products
+2025-10-19 23:31:37,235 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-19 23:31:37,273 - src.load - ERROR - Error de conexión: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:37,274 - src.load - ERROR - Error cargando lote: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:37,274 - __main__ - ERROR - Error cargando products: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:37,274 - __main__ - ERROR - Error en pipeline ETL: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:31:37,274 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 219, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 83, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 198, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 67, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 95, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: no existe la columna «image_url» en la relación «dim_products»
+LINE 2: ...ucts (product_id,title,category,price,description,image_url,...
+                                                             ^
+
+2025-10-19 23:32:54,466 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:32:54,467 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:32:54,467 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:32:54,467 - __main__ - INFO - Cargando products desde caché
+2025-10-19 23:32:54,468 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-19 23:32:54,468 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:32:54,468 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:32:54,468 - __main__ - INFO - Cargando carts desde caché
+2025-10-19 23:32:54,469 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-19 23:32:54,469 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:32:54,469 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:32:54,470 - __main__ - INFO - Cargando users desde caché
+2025-10-19 23:32:54,470 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-19 23:32:54,471 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:32:54,471 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:32:54,471 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:32:54,471 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:32:54,472 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:32:54,472 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:32:54,472 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:32:54,472 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:32:54,472 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:32:54,473 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:32:54,473 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:32:54,473 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:32:54,473 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:32:54,473 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:32:54,474 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:32:54,474 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:32:54,474 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:32:54,474 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:32:54,554 - __main__ - INFO - Cargando 20 registros de products
+2025-10-19 23:32:54,555 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-19 23:32:54,630 - __main__ - INFO - Cargando 10 registros de users
+2025-10-19 23:32:54,630 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-19 23:32:54,685 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-19 23:32:54,686 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-19 23:32:54,740 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-19 23:32:54,740 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-19 23:32:54,793 - __main__ - INFO - Pipeline ETL completado en 0:00:00.327180
+2025-10-19 23:32:54,794 - __main__ - INFO - Registros procesados: 58
+2025-10-19 23:32:54,794 - __main__ - INFO - Errores encontrados: 0
+2025-10-19 23:34:44,307 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:34:44,307 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:34:44,308 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:34:44,308 - __main__ - INFO - Cargando products desde caché
+2025-10-19 23:34:44,309 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-19 23:34:44,309 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:34:44,309 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:34:44,310 - __main__ - INFO - Cargando carts desde caché
+2025-10-19 23:34:44,310 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-19 23:34:44,311 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:34:44,311 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:34:44,311 - __main__ - INFO - Cargando users desde caché
+2025-10-19 23:34:44,312 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-19 23:34:44,312 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:34:44,312 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:34:44,313 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:34:44,313 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:34:44,313 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:34:44,313 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:34:44,314 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:34:44,314 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:34:44,314 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:34:44,315 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:34:44,315 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:34:44,315 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:34:44,316 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:34:44,316 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:34:44,317 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:34:44,317 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:34:44,318 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:34:44,318 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:34:44,386 - src.load - ERROR - Error de conexión: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:34:44,386 - src.load - ERROR - Error cargando lote: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:34:44,387 - __main__ - ERROR - Error cargando dates: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:34:44,387 - __main__ - ERROR - Error en pipeline ETL: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:34:44,387 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 227, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 84, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 199, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 67, in load_data
+    self._insert_batch(table_name, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 115, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-19 23:34:56,703 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-19 23:34:56,703 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-19 23:34:56,704 - __main__ - INFO - Procesando datos de products
+2025-10-19 23:34:56,704 - __main__ - INFO - Cargando products desde caché
+2025-10-19 23:34:56,704 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-19 23:34:56,705 - __main__ - INFO - Procesados 20 registros de products
+2025-10-19 23:34:56,705 - __main__ - INFO - Procesando datos de carts
+2025-10-19 23:34:56,705 - __main__ - INFO - Cargando carts desde caché
+2025-10-19 23:34:56,705 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-19 23:34:56,706 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-19 23:34:56,706 - __main__ - INFO - Procesando datos de users
+2025-10-19 23:34:56,706 - __main__ - INFO - Cargando users desde caché
+2025-10-19 23:34:56,707 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-19 23:34:56,707 - __main__ - INFO - Procesados 10 registros de users
+2025-10-19 23:34:56,707 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-19 23:34:56,708 - __main__ - INFO - Transformando datos de productos
+2025-10-19 23:34:56,708 - src.transform - INFO - Transformados 20 productos
+2025-10-19 23:34:56,708 - __main__ - INFO - Transformando datos de usuarios
+2025-10-19 23:34:56,708 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-19 23:34:56,709 - __main__ - INFO - Transformando datos de carritos
+2025-10-19 23:34:56,709 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-19 23:34:56,709 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-19 23:34:56,709 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-19 23:34:56,709 - __main__ - INFO - Validando calidad de datos para products
+2025-10-19 23:34:56,709 - __main__ - INFO - Validando calidad de datos para users
+2025-10-19 23:34:56,709 - __main__ - INFO - Validando calidad de datos para geography
+2025-10-19 23:34:56,710 - __main__ - INFO - Validando calidad de datos para sales
+2025-10-19 23:34:56,710 - __main__ - INFO - Validando calidad de datos para dates
+2025-10-19 23:34:56,710 - __main__ - INFO - Iniciando fase LOAD
+2025-10-19 23:34:56,710 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-19 23:34:56,710 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-19 23:34:56,759 - __main__ - INFO - Cargando 20 registros de products
+2025-10-19 23:34:56,760 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-19 23:34:56,795 - __main__ - INFO - Cargando 10 registros de users
+2025-10-19 23:34:56,796 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-19 23:34:56,832 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-19 23:34:56,832 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-19 23:34:56,869 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-19 23:34:56,869 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-19 23:34:56,910 - __main__ - INFO - Pipeline ETL completado en 0:00:00.206853
+2025-10-19 23:34:56,910 - __main__ - INFO - Registros procesados: 58
+2025-10-19 23:34:56,910 - __main__ - INFO - Errores encontrados: 0

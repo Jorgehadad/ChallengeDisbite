@@ -177,37 +177,26 @@ class DataTransformer:
             self.logger.warning(f"Fecha inválida: {date_string}, usando fecha actual")
             return datetime.now()
     
-    def generate_date_dimension(self, sales_data: List[Dict]) -> List[Dict]:
-        """Genera dimensión de tiempo a partir de las fechas en ventas."""
+    def generate_date_dimension(self, sales_data):
+        """Genera dimensión de tiempo a partir de las ventas."""
+        dates = []
         unique_dates = set()
         
-        # Extraer fechas únicas de las ventas
         for sale in sales_data:
-            sale_date = sale.get('date')
-            if sale_date:
-                # Normalizar a fecha (sin hora)
-                date_only = sale_date.date()
-                unique_dates.add(date_only)
+            date = sale['date']  # Asumiendo que es un objeto datetime
+            if date not in unique_dates:
+                unique_dates.add(date)
+                dates.append({
+                    'date_key': int(date.strftime('%Y%m%d')),
+                    'date': date,
+                    'day': date.day,
+                    'month': date.month,
+                    'year': date.year,
+                    'quarter': (date.month - 1) // 3 + 1,
+                    'iso_week': int(date.strftime('%V')),
+                    'day_of_week': date.weekday(),
+                    'day_name': date.strftime('%A'),
+                    'month_name': date.strftime('%B')
+                })
         
-        # Generar registros para dimensión de tiempo
-        date_dimension = []
-        
-        for date in sorted(unique_dates):
-            date_record = {
-                'date_key': int(date.strftime('%Y%m%d')),
-                'date': date,
-                'day': date.day,
-                'month': date.month,
-                'year': date.year,
-                'quarter': (date.month - 1) // 3 + 1,
-                'iso_week': date.isocalendar()[1],
-                'day_of_week': date.isoweekday(),
-                'day_name': date.strftime('%A'),
-                'month_name': date.strftime('%B'),
-                'is_weekend': date.weekday() >= 5,
-                'created_at': datetime.now()
-            }
-            date_dimension.append(date_record)
-        
-        self.logger.info(f"Generada dimensión de tiempo con {len(date_dimension)} fechas")
-        return date_dimension
+        return sorted(dates, key=lambda x: x['date_key'])

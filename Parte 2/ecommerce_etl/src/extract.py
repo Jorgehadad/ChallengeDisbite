@@ -7,6 +7,7 @@ from typing import Dict, List, Any
 import time
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+import os
 
 class APIDataExtractor:
     def __init__(self, config: Dict[str, Any]):

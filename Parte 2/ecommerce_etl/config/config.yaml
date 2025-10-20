@@ -14,7 +14,9 @@ database:
   host: "localhost"
   port: 5432
   database: "fakestore_dw"
-  schema: "public"
+  user: "postgres"  # Add this
+  password: "admin"  # Add this
+  target_schema: "public"  # Renamed from schema to target_schema
 
 etl:
   batch_size: 1000
@@ -38,3 +40,7 @@ data_quality:
       - column: "total_amount"
         rule: "greater_than_or_equal"
         value: 0
+
+cache:
+  max_age_hours: 24
+  enabled: true

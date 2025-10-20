@@ -1,0 +1,23 @@
+# Cache directory
+cache/
+*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# Config
+config/config.yaml
+
+# Usar caché
+pipeline = ETLPipeline()
+
+# Forzar actualización
+pipeline = ETLPipeline(force_refresh=True)

@@ -4,6 +4,7 @@
 import logging
 import yaml
 import os
+import json
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -14,12 +15,22 @@ from src.data_quality import DataQualityChecker
 from src.utils import setup_logging, load_config
 
 class ETLPipeline:
-    def __init__(self, config_path="config/config.yaml"):
+    def __init__(self, config_path="config/config.yaml", force_refresh=False):
         """Inicializa el pipeline ETL con configuración."""
+        # Get the directory containing the script
+        self.script_dir = os.path.dirname(os.path.abspath(__file__))
+        # Create absolute path to config file
+        config_path = os.path.join(self.script_dir, config_path)
+        
+        self.force_refresh = force_refresh
         load_dotenv()
         self.config = load_config(config_path)
         setup_logging()
         self.logger = logging.getLogger(__name__)
+        
+        # Crear directorio de caché si no existe
+        self.cache_dir = os.path.join(self.script_dir, 'cache')
+        os.makedirs(self.cache_dir, exist_ok=True)
         
         # Inicializar componentes
         self.extractor = APIDataExtractor(self.config)
@@ -33,6 +44,26 @@ class ETLPipeline:
             'records_processed': 0,
             'errors': []
         }
+
+    def _get_cache_path(self, endpoint_name):
+        """Retorna la ruta del archivo de caché para un endpoint."""
+        return os.path.join(self.cache_dir, f"{endpoint_name}.json")
+
+    def _load_from_cache(self, endpoint_name):
+        """Carga datos desde el caché si existe."""
+        cache_path = self._get_cache_path(endpoint_name)
+        if os.path.exists(cache_path):
+            self.logger.info(f"Cargando {endpoint_name} desde caché")
+            with open(cache_path, 'r') as f:
+                return json.load(f)
+        return None
+
+    def _save_to_cache(self, endpoint_name, data):
+        """Guarda datos en el caché."""
+        cache_path = self._get_cache_path(endpoint_name)
+        self.logger.info(f"Guardando {endpoint_name} en caché")
+        with open(cache_path, 'w') as f:
+            json.dump(data, f)
 
     def run(self):
         """Ejecuta el pipeline ETL completo."""
@@ -61,20 +92,33 @@ class ETLPipeline:
             raise
 
     def _extract_phase(self):
-        """Fase de extracción de datos desde la API."""
+        """Fase de extracción de datos desde la API o caché."""
         self.logger.info("Iniciando fase EXTRACT")
         
         raw_data = {}
         endpoints = self.config['api']['endpoints']
         
         for endpoint_name, endpoint_path in endpoints.items():
-            self.logger.info(f"Extrayendo datos de {endpoint_name}")
+            self.logger.info(f"Procesando datos de {endpoint_name}")
             try:
-                data = self.extractor.fetch_endpoint(endpoint_name, endpoint_path)
-                raw_data[endpoint_name] = data
-                self.logger.info(f"Extraídos {len(data)} registros de {endpoint_name}")
+                # Solo usar caché si no se fuerza actualización
+                cached_data = None if self.force_refresh else self._load_from_cache(endpoint_name)
+                
+                if cached_data is not None:
+                    raw_data[endpoint_name] = cached_data
+                    self.logger.info(f"Datos de {endpoint_name} cargados desde caché")
+                else:
+                    # Si no hay caché o se fuerza actualización, extraer de la API
+                    self.logger.info(f"Extrayendo datos de {endpoint_name} desde API")
+                    data = self.extractor.fetch_endpoint(endpoint_name, endpoint_path)
+                    raw_data[endpoint_name] = data
+                    # Guardar en caché para futura referencia
+                    self._save_to_cache(endpoint_name, data)
+                
+                self.logger.info(f"Procesados {len(raw_data[endpoint_name])} registros de {endpoint_name}")
+                
             except Exception as e:
-                error_msg = f"Error extrayendo {endpoint_name}: {str(e)}"
+                error_msg = f"Error procesando {endpoint_name}: {str(e)}"
                 self.logger.error(error_msg)
                 self.stats['errors'].append(error_msg)
                 raise
@@ -108,11 +152,18 @@ class ETLPipeline:
                 raw_data['carts'], raw_data.get('products', [])
             )
         
-        # Generar dimensión de tiempo
+        # Debugging de dimensión de tiempo
         self.logger.info("Generando dimensión de tiempo")
-        transformed_data['dates'] = self.transformer.generate_date_dimension(
+        dates = self.transformer.generate_date_dimension(
             transformed_data.get('sales', [])
         )
+        # Agregar logging de debug
+        if dates:
+            sample_date = dates[0]
+            self.logger.debug(f"Muestra de fecha transformada: {sample_date}")
+            self.logger.debug(f"Columnas generadas: {list(sample_date.keys())}")
+        
+        transformed_data['dates'] = dates
         
         return transformed_data
 
@@ -165,5 +216,12 @@ class ETLPipeline:
                 self.logger.warning(f"Error: {error}")
 
 if __name__ == "__main__":
-    pipeline = ETLPipeline()
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Execute ETL pipeline')
+    parser.add_argument('--force-refresh', action='store_true', 
+                       help='Force refresh data from API instead of using cache')
+    args = parser.parse_args()
+    
+    pipeline = ETLPipeline(force_refresh=args.force_refresh)
     pipeline.run()
