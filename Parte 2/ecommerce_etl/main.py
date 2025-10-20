@@ -31,6 +31,12 @@ class ETLPipeline:
         # Crear directorio de caché si no existe
         self.cache_dir = os.path.join(self.script_dir, 'cache')
         os.makedirs(self.cache_dir, exist_ok=True)
+
+        # Directorios para persistir datos raw y procesados
+        self.raw_dir = os.path.join(self.script_dir, 'data', 'raw')
+        self.processed_dir = os.path.join(self.script_dir, 'data', 'processed')
+        os.makedirs(self.raw_dir, exist_ok=True)
+        os.makedirs(self.processed_dir, exist_ok=True)
         
         # Inicializar componentes
         self.extractor = APIDataExtractor(self.config)
@@ -115,6 +121,15 @@ class ETLPipeline:
                     # Guardar en caché para futura referencia
                     self._save_to_cache(endpoint_name, data)
                 
+                # Persistir raw en disco
+                try:
+                    raw_path = os.path.join(self.raw_dir, f"{endpoint_name}.json")
+                    with open(raw_path, 'w', encoding='utf-8') as f:
+                        json.dump(raw_data[endpoint_name], f, indent=2, ensure_ascii=False)
+                    self.logger.info(f"Raw data guardada en {raw_path}")
+                except Exception as e:
+                    self.logger.warning(f"No se pudo guardar raw data {endpoint_name}: {e}")
+                
                 self.logger.info(f"Procesados {len(raw_data[endpoint_name])} registros de {endpoint_name}")
                 
             except Exception as e:
@@ -164,6 +179,16 @@ class ETLPipeline:
             self.logger.debug(f"Columnas generadas: {list(sample_date.keys())}")
         
         transformed_data['dates'] = dates
+
+        # Persistir datos procesados en disk
+        try:
+            for key, value in transformed_data.items():
+                path = os.path.join(self.processed_dir, f"{key}.json")
+                with open(path, 'w', encoding='utf-8') as f:
+                    json.dump(value, f, indent=2, ensure_ascii=False, default=str)
+                self.logger.info(f"Processed data guardada en {path}")
+        except Exception as e:
+            self.logger.warning(f"No se pudo guardar processed data: {e}")
         
         return transformed_data
 

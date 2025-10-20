@@ -42,3 +42,107 @@ Estado: PASS
 2025-10-19 23:41:59,647 - __main__ - INFO - Pipeline ETL completado en 0:00:00.383107
 2025-10-19 23:41:59,648 - __main__ - INFO - Registros procesados: 116
 2025-10-19 23:41:59,648 - __main__ - INFO - Errores encontrados: 0
+2025-10-20 00:13:08,254 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 00:13:08,255 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 00:13:08,255 - __main__ - INFO - Procesando datos de products
+2025-10-20 00:13:08,255 - __main__ - INFO - Cargando products desde caché
+2025-10-20 00:13:08,255 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 00:13:08,256 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 00:13:08,256 - __main__ - INFO - Procesando datos de carts
+2025-10-20 00:13:08,257 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 00:13:08,257 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 00:13:08,258 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 00:13:08,258 - __main__ - INFO - Procesando datos de users
+2025-10-20 00:13:08,258 - __main__ - INFO - Cargando users desde caché
+2025-10-20 00:13:08,258 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 00:13:08,259 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 00:13:08,259 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 00:13:08,259 - __main__ - INFO - Transformando datos de productos
+2025-10-20 00:13:08,259 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 00:13:08,259 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 00:13:08,259 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 00:13:08,259 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 00:13:08,260 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 00:13:08,273 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 00:13:08,273 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 00:13:08,273 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 00:13:08,273 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 00:13:08,322 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 00:13:08,367 - src.load - ERROR - Error de conexión: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-20 00:13:08,367 - src.load - ERROR - Error cargando lote: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-20 00:13:08,367 - __main__ - ERROR - Error cargando dates: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-20 00:13:08,368 - __main__ - ERROR - Error en pipeline ETL: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-20 00:13:08,368 - root - CRITICAL - Excepción no capturada:
+Traceback (most recent call last):
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 256, in <module>
+    pipeline.run()
+    ~~~~~~~~~~~~^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 90, in run
+    self._load_phase(transformed_data)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\main.py", line 228, in _load_phase
+    self.loader.load_data(data_type, transformed_data[data_type])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 121, in load_data
+    self._insert_batch(resolved_table, batch)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\jorge\OneDrive - Facultad Regional Resistencia\Challenge Disbite 2025\RepositorioGitChallengeDisbite\ChallengeDisbite\Parte 2\ecommerce_etl\src\load.py", line 171, in _insert_batch
+    psycopg2.extras.execute_batch(cursor, query, data_tuples)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jorge\AppData\Roaming\Python\Python313\site-packages\psycopg2\extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: llave duplicada viola restricción de unicidad «dim_date_pkey»
+DETAIL:  Ya existe la llave (date_key)=(20200101).
+
+2025-10-20 00:13:16,224 - __main__ - INFO - Iniciando pipeline ETL
+2025-10-20 00:13:16,225 - __main__ - INFO - Iniciando fase EXTRACT
+2025-10-20 00:13:16,225 - __main__ - INFO - Procesando datos de products
+2025-10-20 00:13:16,226 - __main__ - INFO - Cargando products desde caché
+2025-10-20 00:13:16,226 - __main__ - INFO - Datos de products cargados desde caché
+2025-10-20 00:13:16,227 - __main__ - INFO - Procesados 20 registros de products
+2025-10-20 00:13:16,228 - __main__ - INFO - Procesando datos de carts
+2025-10-20 00:13:16,228 - __main__ - INFO - Cargando carts desde caché
+2025-10-20 00:13:16,228 - __main__ - INFO - Datos de carts cargados desde caché
+2025-10-20 00:13:16,229 - __main__ - INFO - Procesados 7 registros de carts
+2025-10-20 00:13:16,229 - __main__ - INFO - Procesando datos de users
+2025-10-20 00:13:16,229 - __main__ - INFO - Cargando users desde caché
+2025-10-20 00:13:16,230 - __main__ - INFO - Datos de users cargados desde caché
+2025-10-20 00:13:16,230 - __main__ - INFO - Procesados 10 registros de users
+2025-10-20 00:13:16,230 - __main__ - INFO - Iniciando fase TRANSFORM
+2025-10-20 00:13:16,231 - __main__ - INFO - Transformando datos de productos
+2025-10-20 00:13:16,231 - __main__ - INFO - Transformando datos de usuarios
+2025-10-20 00:13:16,231 - src.transform - INFO - Transformados 10 usuarios y 10 registros geográficos
+2025-10-20 00:13:16,231 - __main__ - INFO - Transformando datos de carritos
+2025-10-20 00:13:16,231 - src.transform - INFO - Transformados 14 registros de ventas
+2025-10-20 00:13:16,231 - __main__ - INFO - Generando dimensión de tiempo
+2025-10-20 00:13:16,234 - __main__ - INFO - Iniciando fase DATA QUALITY
+2025-10-20 00:13:16,234 - __main__ - INFO - 
+Data Quality Report - Valid: True
+Records checked: 58
+Errors found: 0
+2025-10-20 00:13:16,234 - __main__ - INFO - Iniciando fase LOAD
+2025-10-20 00:13:16,234 - __main__ - INFO - Cargando 4 registros de dates
+2025-10-20 00:13:16,383 - src.load - INFO - Cargando 4 registros en dim_date
+2025-10-20 00:13:16,415 - __main__ - INFO - Cargando 20 registros de products
+2025-10-20 00:13:16,462 - src.load - INFO - Cargando 20 registros en dim_products
+2025-10-20 00:13:16,510 - __main__ - INFO - Cargando 10 registros de users
+2025-10-20 00:13:16,545 - src.load - INFO - Cargando 10 registros en dim_users
+2025-10-20 00:13:16,584 - __main__ - INFO - Cargando 10 registros de geography
+2025-10-20 00:13:16,616 - src.load - INFO - Cargando 10 registros en dim_geography
+2025-10-20 00:13:16,649 - __main__ - INFO - Cargando 14 registros de sales
+2025-10-20 00:13:16,679 - src.load - INFO - Cargando 14 registros en fact_sales
+2025-10-20 00:13:16,710 - __main__ - INFO - Pipeline ETL completado en 0:00:00.485572
+2025-10-20 00:13:16,710 - __main__ - INFO - Registros procesados: 116
+2025-10-20 00:13:16,711 - __main__ - INFO - Errores encontrados: 0
