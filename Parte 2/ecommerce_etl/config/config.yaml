@@ -1,0 +1,40 @@
+# Configuración ETL (rellenar valores según entorno)
+api:
+  base_url: "https://fakestoreapi.com"
+  endpoints:
+    products: "/products"
+    carts: "/carts"
+    users: "/users"
+  retry:
+    max_retries: 3
+    backoff_factor: 1
+    status_forcelist: [500, 502, 503, 504]
+
+database:
+  host: "localhost"
+  port: 5432
+  database: "fakestore_dw"
+  schema: "public"
+
+etl:
+  batch_size: 1000
+  chunk_size: 500
+  max_workers: 4
+
+data_quality:
+  rules:
+    products:
+      - column: "price"
+        rule: "greater_than"
+        value: 0
+      - column: "rating_rate"
+        rule: "between"
+        min: 0
+        max: 5
+    sales:
+      - column: "quantity"
+        rule: "greater_than"
+        value: 0
+      - column: "total_amount"
+        rule: "greater_than_or_equal"
+        value: 0
